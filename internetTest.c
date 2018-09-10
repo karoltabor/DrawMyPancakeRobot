@@ -48,25 +48,24 @@ task main()
 			// For example when message "Forward" is received, the EV3 should move forward.
 			if(strcmp(msgBufIn,"Forward") == 0)
 			{
-				setMotorSyncEncoder(motorB, motorC, 0, 50, 50);
-
+				setMotorSyncEncoder(motorA, motorB, 0, 50, 50);
 			}
 			if(strcmp(msgBufIn,"Backward") == 0)
 			{
-				setMotorSyncEncoder(motorB, motorC, 100, 50, 50);
-
+				setMotorSyncEncoder(motorA, motorB, 0, -50, -50);
 			}
 			if(strcmp(msgBufIn,"Left") == 0)
 			{
-				setMotorSyncEncoder(motorB, motorC, 50, 50, 50);
-
+				setMotorSyncEncoder(motorA, motorB, 50, 50, 50);
 			}
 			if(strcmp(msgBufIn,"Right") == 0)
 			{
-				setMotorSyncEncoder(motorB, motorC, -50, 50, 50);
+				setMotorSyncEncoder(motorA, motorB, -50, 50, 50);
+			}
+			if(strcmp(msgBufIn,"Rond") == 0)
+			{
 
 			}
-
 		}
 		else
 		{
@@ -74,12 +73,11 @@ task main()
 			displayBigTextLine(8, "empty message!");
 		}
 
-
 		// Here fill your outgoing message handling.
 		// This means sending the distance in cm measured by the ultrasonic sensor
 		// and the angle in degrees measured by the gyro sensor.
 		// Put both values in msgBufOut.
-		// Use the format “<distance> <angle>" (space between distance and angle) so that it can be read by the host program.
+		// Use the format ?<distance> <angle>" (space between distance and angle) so that it can be read by the host program.
 
 		writeMailboxOut("EV3_OUTBOX0", msgBufOut);
 
