@@ -62,7 +62,7 @@ task main()
 			{
 				setMotorSyncEncoder(motorA, motorB, -50, 50, 50);
 			}
-			if(strcmp(msgBufIn,"Rond") == 0)
+			if(strcmp(msgBufIn,"Lego") == 0)
 			{
 
 			}
