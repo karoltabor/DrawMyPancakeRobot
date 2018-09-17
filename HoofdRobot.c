@@ -53,7 +53,7 @@ task main()
 				calibrateX();
 				calibrateY();
 				wait1Msec(2000);
-				drawSquare();
+				moveCircular(75, 60, 50);
 				wait1Msec(1000);
 
 				calibrateX();

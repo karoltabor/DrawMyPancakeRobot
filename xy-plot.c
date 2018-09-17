@@ -93,7 +93,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 		int deviation = 5;
 
 		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-deviation) && (getMotorEncoder(yMotor) < yDesinationEncoder+deviation)) ||
-					!((getMotorEncoder(xMotor) > xDesinationEncoder-deviation) && (getMotorEncoder(xMotor) < xDesinationEncoder+deviation))){
+			!((getMotorEncoder(xMotor) > xDesinationEncoder-deviation) && (getMotorEncoder(xMotor) < xDesinationEncoder+deviation))){
 			if(yDesinationEncoder > (getMotorEncoder(yMotor)-deviation)){
 				setMotor(yMotor,-20);
 			}
@@ -127,16 +127,17 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 ********************************************************/
 void moveCircular(int xCenter, int yCenter, int radius){
 	moveLinear(xCenter, yCenter-radius);
-	int angle = 0
-	int step = 1;
+	int angle = 0;
+	int step = 5;
 	while(angle <=360){
-		int xPoint = xCenter + radius * cos(angle);
-		int yPoint = yCenter + radius * sin(angle);
+		int xPoint = xCenter + radius * sinDegrees(angle);
+		int yPoint = yCenter + radius * -cosDegrees(angle);
 		moveLinear(xPoint - xPosition, yPoint - yPosition);
-		angle = angle + step;
+		writeDebugStreamLine("y-point: %d, move-y: %d", yPoint, yPoint - yPosition);
+		angle += step;
 	}
 
-
+}
 
 /********************************************************
 *   Draw Square
