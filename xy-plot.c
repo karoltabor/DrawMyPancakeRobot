@@ -122,6 +122,21 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 }
 
 
+/********************************************************
+*   Move circular
+********************************************************/
+void moveCircular(int xCenter, int yCenter, int radius){
+	moveLinear(xCenter, yCenter-radius);
+	int angle = 0
+	int step = 1;
+	while(angle <=360){
+		int xPoint = xCenter + radius * cos(angle);
+		int yPoint = yCenter + radius * sin(angle);
+		moveLinear(xPoint - xPosition, yPoint - yPosition);
+		angle = angle + step;
+	}
+
+
 
 /********************************************************
 *   Draw Square
