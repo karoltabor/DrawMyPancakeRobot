@@ -24,7 +24,7 @@ task monitorPlotter()
 	{
 		wait1Msec(100);
 		displayBigTextLine(3, "X pos: <%d>;", getMotorEncoder(xMotor));
-		displayBigTextLine(4, "Y pos: <%d>;", getMotorEncoder(yMotor));
+		displayBigTextLine(6, "Y pos: <%d>;", getMotorEncoder(yMotor));
 		/*		displayBigTextLine(5, "Press pos: &lt; %d&gt;", nMotorEncoder[pressMotor]);
 		if(SensorValue(pressHome) == 1){
 		displayBigTextLine(2, "Press is on, &lt; %d&gt;", SensorValue(pressHome));}
@@ -48,6 +48,7 @@ void calibrateX(){
 			setMotor(xMotor2,0);
 		}
 	}
+	setMotor(xMotor, 0);
 	while(getTouchValue(xHome2) == false){
 		setMotor(xMotor2,-20);
 	}
@@ -98,19 +99,25 @@ void pressBottle(bool enabled)   //True = pen down, write; False = pen up
 *   Movement functions
 ********************************************************/
 void moveLinear(int amountToMoveX, int amountToMoveY){
+
+	writeDebugStreamLine("x position: %d", xPosition);
 	xPosition = xPosition+amountToMoveX;
+
+	writeDebugStreamLine("x position: %d", xPosition);
 	yPosition = yPosition+amountToMoveY;
 	if(xPosition <= 1000 && yPosition <= 600){
-		xDestination = 5*xPosition; // xDestination = 5x Current xPosition;
-		yDestination = 5*yPosition; // yDestination = 5x Current yPosition;
+		xDestination = 5*amountToMoveX; // xDestination = 5x Current xPosition;
+		yDestination = 5*amountToMoveY; // yDestination = 5x Current yPosition;
 
 		delay(1000);
 
-		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination;
-		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination;
+		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
+		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination);
 		// TODO: Insert writeToDataStream
-		while((getMotorEncoder(yMotor) != yDesinationEncoder) && (getMotorEncoder(xMotor) != xDesinationEncoder)){
+		writeDebugStreamLine("Before while loop");
 
+		writeDebugStreamLine("%d, %d, %d, %d", getMotorEncoder(yMotor), yDesinationEncoder, getMotorEncoder(xMotor), xDesinationEncoder);
+		while((getMotorEncoder(yMotor) != yDesinationEncoder) || (getMotorEncoder(xMotor) != xDesinationEncoder)){
 			if(yDesinationEncoder > getMotorEncoder(yMotor)){
 				setMotor(yMotor,20);
 			}
@@ -118,7 +125,8 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 				setMotor(yMotor,-20);
 			}
 			else {
-				setMotor(yMotor, 0);
+
+				writeDebugStreamLine("stop y");
 				yDestination = 1;
 			}
 
@@ -126,7 +134,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 				setMotorSync(xMotor,xMotor2,0,20);
 			}
 			else if(xDesinationEncoder < getMotorEncoder(xMotor)){
-				setMotorSync(xMotor,xMotor2,0,20);
+				setMotorSync(xMotor,xMotor2,0,-20);
 			}
 			else{
 				setMotorSync(xMotor,xMotor2,0,0);
@@ -134,6 +142,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 			}
 
 		}
+		writeDebugStreamLine("After while loop");
 		stopAllMotors();
 	}
 }
@@ -145,7 +154,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 ********************************************************/
 void drawSquares(){
 	moveLinear(20,20);
-
+	delay(1000);
 	moveLinear(50,0);
 	moveLinear(0,50);
 	moveLinear(-50,0);
