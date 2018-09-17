@@ -25,12 +25,6 @@ task monitorPlotter()
 		wait1Msec(100);
 		displayBigTextLine(3, "X pos: <%d>;", getMotorEncoder(xMotor));
 		displayBigTextLine(6, "Y pos: <%d>;", getMotorEncoder(yMotor));
-		/*		displayBigTextLine(5, "Press pos: &lt; %d&gt;", nMotorEncoder[pressMotor]);
-		if(SensorValue(pressHome) == 1){
-		displayBigTextLine(2, "Press is on, &lt; %d&gt;", SensorValue(pressHome));}
-		else {
-		displayBigTextLine(2, "Press is off, &lt; %d&gt;", SensorValue(pressHome));
-		}*/
 	}
 
 }
@@ -76,21 +70,9 @@ void calibrateY(){
 /********************************************************
 *  Press Bottle
 ********************************************************/
-void pressBottle(bool enabled)   //True = pen down, write; False = pen up
+void pressBottle(bool enabled)
 {
-	/*	if (enabled == false) {
-	displayBigTextLine(1, "Press on:  &lt; %d&gt;", nMotorEncoder[pressMotor]);
-	while(SensorValue(pressHome) == 0){motor[pressHome] = -10;}      // Raise the Pen
-	motor[pressMotor] = 0;
-	nMotorEncoder[pressMotor] = 0;
-	//    penPosition = false;
-	}
 
-	if (enabled == true) {
-	displayBigTextLine(1, "Press off: &lt; %d&gt;", nMotorEncoder[pressMotor]);
-	while(nMotorEncoder[pressMotor] < 250){motor[pressMotor] = 10;}   // Lower the Pen by 250º to Draw
-	motor[pressMotor] = 0;
-	penPosition = true; }*/
 }
 
 
@@ -99,41 +81,33 @@ void pressBottle(bool enabled)   //True = pen down, write; False = pen up
 *   Movement functions
 ********************************************************/
 void moveLinear(int amountToMoveX, int amountToMoveY){
-
-	writeDebugStreamLine("x position: %d", xPosition);
 	xPosition = xPosition+amountToMoveX;
-
-	writeDebugStreamLine("x position: %d", xPosition);
 	yPosition = yPosition+amountToMoveY;
+
 	if(xPosition <= 1000 && yPosition <= 600){
 		xDestination = 5*amountToMoveX; // xDestination = 5x Current xPosition;
-		yDestination = 5*amountToMoveY; // yDestination = 5x Current yPosition;
-
-		delay(1000);
+		yDestination = -5*amountToMoveY; // yDestination = 5x Current yPosition;
 
 		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
 		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination);
-		// TODO: Insert writeToDataStream
-		writeDebugStreamLine("Before while loop");
+		int deviation = 5;
 
-		writeDebugStreamLine("%d, %d, %d, %d", getMotorEncoder(yMotor), yDesinationEncoder, getMotorEncoder(xMotor), xDesinationEncoder);
-		while((getMotorEncoder(yMotor) != yDesinationEncoder) || (getMotorEncoder(xMotor) != xDesinationEncoder)){
-			if(yDesinationEncoder > getMotorEncoder(yMotor)){
-				setMotor(yMotor,20);
-			}
-			else if(yDesinationEncoder < getMotorEncoder(yMotor)){
+		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-deviation) && (getMotorEncoder(yMotor) < yDesinationEncoder+deviation)) ||
+					!((getMotorEncoder(xMotor) > xDesinationEncoder-deviation) && (getMotorEncoder(xMotor) < xDesinationEncoder+deviation))){
+			if(yDesinationEncoder > (getMotorEncoder(yMotor)-deviation)){
 				setMotor(yMotor,-20);
 			}
+			else if(yDesinationEncoder < (getMotorEncoder(yMotor)+deviation)){
+				setMotor(yMotor,20);
+			}
 			else {
-
-				writeDebugStreamLine("stop y");
 				yDestination = 1;
 			}
 
-			if(xDesinationEncoder > getMotorEncoder(xMotor)){
+			if(xDesinationEncoder > (getMotorEncoder(xMotor)-deviation)){
 				setMotorSync(xMotor,xMotor2,0,20);
 			}
-			else if(xDesinationEncoder < getMotorEncoder(xMotor)){
+			else if(xDesinationEncoder < (getMotorEncoder(xMotor)+deviation)){
 				setMotorSync(xMotor,xMotor2,0,-20);
 			}
 			else{
@@ -142,40 +116,22 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 			}
 
 		}
-		writeDebugStreamLine("After while loop");
 		stopAllMotors();
+		delay(100);
 	}
 }
 
 
 
 /********************************************************
-*   Draw Squares
+*   Draw Square
 ********************************************************/
-void drawSquares(){
+void drawSquare(){
 	moveLinear(20,20);
-	delay(1000);
 	moveLinear(50,0);
 	moveLinear(0,50);
 	moveLinear(-50,0);
 	moveLinear(0,-50);
-
-	/*moveLinear(20,20);
-	moveLinear(70,0);
-	moveLinear(0,70);
-	moveLinear(-70,0);
-	moveLinear(0,-77);
-
-
-	moveLinear(20,20);
-	moveLinear(100,0);
-	moveLinear(0,100);
-	moveLinear(-100,0);
-	moveLinear(0,-107);
-
-	moveLinear(-50,150);*/
-
-	wait1Msec(10000);
 }
 
 
