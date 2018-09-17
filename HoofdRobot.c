@@ -1,6 +1,6 @@
 #pragma config(Sensor, S1,     xHome,          sensorEV3_Touch)
-#pragma config(Sensor, S3,     xHome2,         sensorEV3_Touch)
-#pragma config(Sensor, S4,     yHome,          sensorEV3_Touch)
+#pragma config(Sensor, S3,     yHome,          sensorEV3_Touch)
+#pragma config(Sensor, S4,     xHome2,         sensorEV3_Touch)
 #pragma config(Motor,  motorA,          xMotor,        tmotorEV3_Large, PIDControl, encoder)
 #pragma config(Motor,  motorB,          yMotor,        tmotorEV3_Large, PIDControl, reversed, encoder)
 #pragma config(Motor,  motorC,          xMotor2,       tmotorEV3_Large, PIDControl, encoder)

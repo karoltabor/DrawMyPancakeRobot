@@ -128,10 +128,10 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 ********************************************************/
 void drawSquare(){
 	moveLinear(20,20);
-	moveLinear(50,0);
-	moveLinear(0,50);
-	moveLinear(-50,0);
-	moveLinear(0,-50);
+	moveLinear(150,0);
+	moveLinear(0,120);
+	moveLinear(-150,0);
+	moveLinear(0,-120);
 }
 
 
