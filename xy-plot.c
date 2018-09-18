@@ -170,24 +170,38 @@ void drawTriangle(int sideLength){
 void drawHeart(int width){
 	moveLinear(20+(width/2),20);
 	//Right straight part
+	writeDebugStreamLine("x-point: %d, y-point: %d", xPosition, yPosition);
 	moveLinear(width/2,width/2);
 	//Right half circle of the heart
-	int rightHeartAngle = 0;
+	int rightHeartAngle = 90;
 	int xRightHeartCenter = (width*0.75)+20;
 	int yRightHeartCenter = (width/2)+20;
 	int heartRadius = width/4;
 	int heartStep = 5;
-	while(rightHeartAngle <=180){
+	while(rightHeartAngle <= 270){
 		int xRightHeartPoint = xRightHeartCenter + heartRadius * sinDegrees(rightHeartAngle);
-		int yRightHeartPoint = yRightHeartCenter + heartRadius * cosDegrees(rightHeartAngle);
+		int yRightHeartPoint = yRightHeartCenter + heartRadius * -cosDegrees(rightHeartAngle);
 		moveLinear(xRightHeartPoint - xPosition, yRightHeartPoint - yPosition);
 		writeDebugStreamLine("y-point: %d, move-y: %d", yRightHeartPoint, yRightHeartPoint - yPosition);
 		rightHeartAngle += heartStep;
 	}
 	//Left half circle of the heart
-	moveCircular((width/4)+20,(width/2)+20,width/4, 180);
+	int leftHeartAngle = 90;
+	int xLeftHeartCenter = (width*0.25)+20;
+	int yLeftHeartCenter = (width/2)+20;
+	int leftRadius = width/4;
+	int leftStep = 5;
+	while(leftHeartAngle <= 270){
+		int xLeftHeartPoint = xLeftHeartCenter + leftRadius * sinDegrees(leftHeartAngle);
+		int yLeftHeartPoint = yLeftHeartCenter + leftRadius * -cosDegrees(leftHeartAngle);
+		moveLinear(xLeftHeartPoint - xPosition, yLeftHeartPoint - yPosition);
+		writeDebugStreamLine("y-point: %d, move-y: %d", yLeftHeartPoint, yLeftHeartPoint - yPosition);
+		leftHeartAngle += leftStep;
+	}
+	writeDebugStreamLine("x-point: %d, y-point: %d", xPosition, yPosition);
 	//Left straight part
 	moveLinear(width/2, -(width/2));
+	writeDebugStreamLine("x-point: %d, y-point: %d", xPosition, yPosition);
 }
 
 
@@ -217,14 +231,14 @@ void drawSpiral(int xCenter, int yCenter, double radius){
 	moveLinear(xCenter, yCenter-radius);
 	int angle = 0;
 	int step = 5;
-	while(!(xPosition = xCenter) && !(yPosition =yCenter)){
+	while(radius > 5){
 		int xPoint = xCenter + radius * sinDegrees(angle);
 		int yPoint = yCenter + radius * -cosDegrees(angle);
 		moveLinear(xPoint - xPosition, yPoint - yPosition);
 		writeDebugStreamLine("y-point: %d, move-y: %d", yPoint, yPoint - yPosition);
 		angle += step;
-		radius -= 0.2 ;
-		if(angle = 360){
+		radius = radius - 0.2 ;
+		if(angle >= 360){
 			angle = 0;
 		}
 	}
