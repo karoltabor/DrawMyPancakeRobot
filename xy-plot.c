@@ -13,6 +13,8 @@ void moveLinear(int amountToMoveX, int amountToMoveY);
 bool penPosition = false;
 int xPosition, xDestination;
 int yPosition, yDestination;
+int gridWidth = 1000;
+int gridHeight = 700;
 
 
 /*******************************************************
@@ -30,6 +32,7 @@ task monitorPlotter()
 }
 
 
+// TODO: calibrate simultaneously
 
 /********************************************************
 *   Calibration X - Axis
@@ -80,11 +83,15 @@ void pressBottle(bool enabled)
 /********************************************************
 *   Movement functions
 ********************************************************/
-void moveLinear(int amountToMoveX, int amountToMoveY){
+void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
+	int ratio = amountToMoveX / amountToMoveY;
+	int xSpeed = speed * ratio;	// TODO: maths
+	int ySpeed = speed * ratio;	// TODO: maths
+
 	xPosition = xPosition+amountToMoveX;
 	yPosition = yPosition+amountToMoveY;
 
-	if(xPosition <= 1000 && yPosition <= 600){
+	if(xPosition <= gridWidth && yPosition <= gridHeight){
 		xDestination = 5*amountToMoveX; // xDestination = 5x Current xPosition;
 		yDestination = -5*amountToMoveY; // yDestination = 5x Current yPosition;
 
@@ -95,20 +102,20 @@ void moveLinear(int amountToMoveX, int amountToMoveY){
 		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-deviation) && (getMotorEncoder(yMotor) < yDesinationEncoder+deviation)) ||
 			!((getMotorEncoder(xMotor) > xDesinationEncoder-deviation) && (getMotorEncoder(xMotor) < xDesinationEncoder+deviation))){
 			if(yDesinationEncoder > (getMotorEncoder(yMotor)-deviation)){
-				setMotor(yMotor,-20);
+				setMotor(yMotor,-ySpeed);
 			}
 			else if(yDesinationEncoder < (getMotorEncoder(yMotor)+deviation)){
-				setMotor(yMotor,20);
+				setMotor(yMotor,ySpeed);
 			}
 			else {
 				yDestination = 1;
 			}
 
 			if(xDesinationEncoder > (getMotorEncoder(xMotor)-deviation)){
-				setMotorSync(xMotor,xMotor2,0,20);
+				setMotorSync(xMotor,xMotor2,0,xSpeed);
 			}
 			else if(xDesinationEncoder < (getMotorEncoder(xMotor)+deviation)){
-				setMotorSync(xMotor,xMotor2,0,-20);
+				setMotorSync(xMotor,xMotor2,0,-xSpeed);
 			}
 			else{
 				setMotorSync(xMotor,xMotor2,0,0);
