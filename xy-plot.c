@@ -33,6 +33,33 @@ task monitorPlotter()
 
 
 // TODO: calibrate simultaneously
+void calibrate() {
+	while(!(getTouchValue(xHome) && getTouchValue(xHome2) && getTouchValue(yHome))) {
+		if(getTouchValue(xHome) == false) {
+			setMotor(xMotor,-20);
+		} else {
+			setMotor(xMotor,0);
+		}
+
+		if(getTouchValue(xHome2) == false) {
+			setMotor(xMotor2,-20);
+		} else {
+			setMotor(xMotor2,0);
+		}
+
+		if(getTouchValue(yHome) == false) {
+			setMotor(yMotor,-20);
+		} else {
+			setMotor(yMotor,0);
+		}
+	}
+	stopAllMotors();
+	resetMotorEncoder(xMotor);
+	resetMotorEncoder(xMotor2);
+	resetMotorEncoder(yMotor);
+	xPosition = 0; xDestination = 0;
+	yPosition = 0; yDestination = 0;
+}
 
 /********************************************************
 *   Calibration X - Axis

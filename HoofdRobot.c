@@ -50,14 +50,12 @@ task main()
 				eraseDisplay();
 				startTask(monitorPlotter);
 				wait1Msec(2000);
-				calibrateX();
-				calibrateY();
+				calibrate();
 				wait1Msec(2000);
 				drawSpiral(70, 70, 50.00);
 				wait1Msec(1000);
 
-				calibrateX();
-				calibrateY();
+				calibrate();
 			}
 		}
 		else
