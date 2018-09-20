@@ -15,6 +15,8 @@ int xPosition, xDestination;
 int yPosition, yDestination;
 int gridWidth = 1000;
 int gridHeight = 700;
+int factor = 5;
+int unprecision = 5;
 
 
 /*******************************************************
@@ -112,36 +114,43 @@ void pressBottle(bool enabled)
 ********************************************************/
 void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 	int ratio = amountToMoveX / amountToMoveY;
-	int xSpeed = speed * ratio;	// TODO: maths
-	int ySpeed = speed * ratio;	// TODO: maths
+	if(ratio>1){
+		int xSpeed = speed;
+		int ySpeed = speed / ratio;
+	} else if (ratio<1){
+		int xSpeed = speed * ratio;
+		int ySpeed = speed;
+	} else {
+		int xSpeed = speed;
+		int ySpeed = speed;
+	}
 
 	xPosition = xPosition+amountToMoveX;
 	yPosition = yPosition+amountToMoveY;
 
 	if(xPosition <= gridWidth && yPosition <= gridHeight){
-		xDestination = 5*amountToMoveX; // xDestination = 5x Current xPosition;
-		yDestination = -5*amountToMoveY; // yDestination = 5x Current yPosition;
+		xDestination = factor*amountToMoveX; // xDestination = 5x Current xPosition;
+		yDestination = -factor*amountToMoveY; // yDestination = 5x Current yPosition;
 
 		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
 		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination);
-		int deviation = 5;
 
-		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-deviation) && (getMotorEncoder(yMotor) < yDesinationEncoder+deviation)) ||
-			!((getMotorEncoder(xMotor) > xDesinationEncoder-deviation) && (getMotorEncoder(xMotor) < xDesinationEncoder+deviation))){
-			if(yDesinationEncoder > (getMotorEncoder(yMotor)-deviation)){
+		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-unprecision) && (getMotorEncoder(yMotor) < yDesinationEncoder+unprecision)) ||
+			!((getMotorEncoder(xMotor) > xDesinationEncoder-unprecision) && (getMotorEncoder(xMotor) < xDesinationEncoder+unprecision))){
+			if(yDesinationEncoder > (getMotorEncoder(yMotor)-unprecision)){
 				setMotor(yMotor,-ySpeed);
 			}
-			else if(yDesinationEncoder < (getMotorEncoder(yMotor)+deviation)){
+			else if(yDesinationEncoder < (getMotorEncoder(yMotor)+unprecision)){
 				setMotor(yMotor,ySpeed);
 			}
 			else {
 				yDestination = 1;
 			}
 
-			if(xDesinationEncoder > (getMotorEncoder(xMotor)-deviation)){
+			if(xDesinationEncoder > (getMotorEncoder(xMotor)-unprecision)){
 				setMotorSync(xMotor,xMotor2,0,xSpeed);
 			}
-			else if(xDesinationEncoder < (getMotorEncoder(xMotor)+deviation)){
+			else if(xDesinationEncoder < (getMotorEncoder(xMotor)+unprecision)){
 				setMotorSync(xMotor,xMotor2,0,-xSpeed);
 			}
 			else{
@@ -151,7 +160,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 
 		}
 		stopAllMotors();
-		delay(100);
+		//delay(100);
 	}
 }
 
