@@ -52,7 +52,7 @@ task main()
 				wait1Msec(2000);
 				calibrate();
 				wait1Msec(2000);
-				drawSpiral(70, 70, 50.00);
+				drawCircle(60, 60, 50, 360, 20);
 				wait1Msec(1000);
 
 				calibrate();

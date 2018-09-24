@@ -7,7 +7,7 @@ task monitorPlotter();
 void calibrateX();
 void calibrateY();
 void pressBottle(bool enabled);
-void moveLinear(int amountToMoveX, int amountToMoveY);
+void moveLinear(int amountToMoveX, int amountToMoveY, int speed);
 
 
 bool penPosition = false;
@@ -39,19 +39,19 @@ void calibrate() {
 	while(!(getTouchValue(xHome) && getTouchValue(xHome2) && getTouchValue(yHome))) {
 		if(getTouchValue(xHome) == false) {
 			setMotor(xMotor,-20);
-		} else {
+			} else {
 			setMotor(xMotor,0);
 		}
 
 		if(getTouchValue(xHome2) == false) {
 			setMotor(xMotor2,-20);
-		} else {
+			} else {
 			setMotor(xMotor2,0);
 		}
 
 		if(getTouchValue(yHome) == false) {
 			setMotor(yMotor,-20);
-		} else {
+			} else {
 			setMotor(yMotor,0);
 		}
 	}
@@ -113,16 +113,24 @@ void pressBottle(bool enabled)
 *   Movement functions
 ********************************************************/
 void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
-	int ratio = amountToMoveX / amountToMoveY;
-	if(ratio>1){
-		int xSpeed = speed;
-		int ySpeed = speed / ratio;
-	} else if (ratio<1){
-		int xSpeed = speed * ratio;
-		int ySpeed = speed;
+	//100, 0, 20 => 1,20,20
+	float ratio;
+	if(amountToMoveX == 0 || amountToMoveY == 0){
+		ratio = 1;
 	} else {
-		int xSpeed = speed;
-		int ySpeed = speed;
+		ratio = (float) amountToMoveX / amountToMoveY;
+	}
+	int xSpeed;
+	int ySpeed;
+	if(ratio>1){
+		xSpeed = speed;
+		ySpeed = abs(speed / ratio);
+	} else if (ratio<1){
+		xSpeed = abs(speed * ratio);
+		ySpeed = speed;
+	} else {
+		xSpeed = speed;
+		ySpeed = speed;
 	}
 
 	xPosition = xPosition+amountToMoveX;
@@ -160,23 +168,45 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 
 		}
 		stopAllMotors();
-		//delay(100);
 	}
 }
 
 
 /********************************************************
+*   Fill circle
+********************************************************/
+void fillCircle(int diameter, int margin, int steps, int speed) {
+	bool left = false;
+
+	pressBottle(false);
+	moveLinear(diameter / 2 + margin, margin, speed);
+
+	pressBottle(true);
+	for (int i = 0; i < diameter; i += 5) {
+	    if (left) {
+	        moveLinear(i * 2, 0, speed);
+	        moveLinear(step, step, speed);
+	        left = false;
+	    } else {
+	        moveLinear(-i * 2, 0, speed);
+	        moveLinear(-step, step, speed);
+	        left = true;
+	    }
+	}
+	pressBottle(false);
+}
+
+/********************************************************
 *   Move circular
 ********************************************************/
-void moveCircular(int xCenter, int yCenter, int radius, int finalAngle){
-	moveLinear(xCenter, yCenter-radius);
+void drawCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed){
+	moveLinear(xCenter, yCenter-radius,speed);
 	int angle = 0;
-	int step = 5;
+	int step = 4;
 	while(angle <=finalAngle){
 		int xPoint = xCenter + radius * sinDegrees(angle);
 		int yPoint = yCenter + radius * -cosDegrees(angle);
-		moveLinear(xPoint - xPosition, yPoint - yPosition);
-		writeDebugStreamLine("y-point: %d, move-y: %d", yPoint, yPoint - yPosition);
+		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
 		angle += step;
 	}
 
@@ -185,36 +215,36 @@ void moveCircular(int xCenter, int yCenter, int radius, int finalAngle){
 /********************************************************
 *   Draw Square
 ********************************************************/
-void drawSquare(){
-	moveLinear(20,20);
-	moveLinear(150,0);
-	moveLinear(0,120);
-	moveLinear(-150,0);
-	moveLinear(0,-120);
+void drawSquare(int speed){
+	moveLinear(20,20,speed);
+	moveLinear(150,0,speed);
+	moveLinear(0,120,speed);
+	moveLinear(-150,0,speed);
+	moveLinear(0,-120,speed);
 }
 
 
 /********************************************************
 *   Draw Triangle
 ********************************************************/
-void drawTriangle(int sideLength){
-	moveLinear(20,20);
-	moveLinear(sideLength,0);
+void drawTriangle(int sideLength, int speed){
+	moveLinear(20,20,speed);
+	moveLinear(sideLength,0,speed);
 	int height = (sqrt(3)/2) * sideLength;
 	int xTop = (sideLength/2) + 20;
 	int yTop = height + 20;
-	moveLinear(xTop-xPosition,yTop-20);
-	moveLinear(20-xTop,20-yTop);
+	moveLinear(xTop-xPosition,yTop-20,speed);
+	moveLinear(20-xTop,20-yTop,speed);
 }
 
 /********************************************************
 *   Draw Heart
 ********************************************************/
 void drawHeart(int width){
-	moveLinear(20+(width/2),20);
+	moveLinear(20+(width/2),20,20);
 	//Right straight part
 	writeDebugStreamLine("x-point: %d, y-point: %d", xPosition, yPosition);
-	moveLinear(width/2,width/2);
+	moveLinear(width/2,width/2,20);
 	//Right half circle of the heart
 	int rightHeartAngle = 90;
 	int xRightHeartCenter = (width*0.75)+20;
@@ -224,7 +254,7 @@ void drawHeart(int width){
 	while(rightHeartAngle <= 270){
 		int xRightHeartPoint = xRightHeartCenter + heartRadius * sinDegrees(rightHeartAngle);
 		int yRightHeartPoint = yRightHeartCenter + heartRadius * -cosDegrees(rightHeartAngle);
-		moveLinear(xRightHeartPoint - xPosition, yRightHeartPoint - yPosition);
+		moveLinear(xRightHeartPoint - xPosition, yRightHeartPoint - yPosition,20);
 		writeDebugStreamLine("y-point: %d, move-y: %d", yRightHeartPoint, yRightHeartPoint - yPosition);
 		rightHeartAngle += heartStep;
 	}
@@ -237,13 +267,13 @@ void drawHeart(int width){
 	while(leftHeartAngle <= 270){
 		int xLeftHeartPoint = xLeftHeartCenter + leftRadius * sinDegrees(leftHeartAngle);
 		int yLeftHeartPoint = yLeftHeartCenter + leftRadius * -cosDegrees(leftHeartAngle);
-		moveLinear(xLeftHeartPoint - xPosition, yLeftHeartPoint - yPosition);
+		moveLinear(xLeftHeartPoint - xPosition, yLeftHeartPoint - yPosition,20);
 		writeDebugStreamLine("y-point: %d, move-y: %d", yLeftHeartPoint, yLeftHeartPoint - yPosition);
 		leftHeartAngle += leftStep;
 	}
 	writeDebugStreamLine("x-point: %d, y-point: %d", xPosition, yPosition);
 	//Left straight part
-	moveLinear(width/2, -(width/2));
+	moveLinear(width/2, -(width/2),20);
 	writeDebugStreamLine("x-point: %d, y-point: %d", xPosition, yPosition);
 }
 
@@ -251,18 +281,18 @@ void drawHeart(int width){
 /********************************************************
 *   Draw Star
 ********************************************************/
-void drawStar(int outerRadius, int innerRadius){
-	moveLinear(outerRadius+20,20);
+void drawStar(int outerRadius, int innerRadius, int speed){
+	moveLinear(outerRadius+20,outerRadius+20,speed);
 	int centerX = outerRadius + 20;
 	int centerY = outerRadius + 20;
 	int starPoints = 0;
-	while(starPoints<= 5){
+	while(starPoints < 5){
 		int innerX = centerX + innerRadius * cosDegrees((starPoints*72)+36);
 		int innerY = centerY + innerRadius * sinDegrees((starPoints*72)+36);
-		moveLinear(innerX - xPosition, innerY - yPosition);
+		moveLinear(innerX - xPosition, innerY - yPosition,speed);
 		int outerX = centerX + outerRadius * cosDegrees(starPoints*72);
 		int outerY = centerY + outerRadius * sinDegrees(starPoints*72);
-		moveLinear(outerX - xPosition, outerY - yPosition);
+		moveLinear(outerX - xPosition, outerY - yPosition,speed);
 		starPoints += 1;
 	}
 }
@@ -270,14 +300,14 @@ void drawStar(int outerRadius, int innerRadius){
 /********************************************************
 *		Draw Spiral
 ********************************************************/
-void drawSpiral(int xCenter, int yCenter, double radius){
-	moveLinear(xCenter, yCenter-radius);
+void drawSpiral(int xCenter, int yCenter, double radius, int speed){
+	moveLinear(xCenter, yCenter-radius,speed);
 	int angle = 0;
 	int step = 5;
 	while(radius > 5){
 		int xPoint = xCenter + radius * sinDegrees(angle);
 		int yPoint = yCenter + radius * -cosDegrees(angle);
-		moveLinear(xPoint - xPosition, yPoint - yPosition);
+		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
 		writeDebugStreamLine("y-point: %d, move-y: %d", yPoint, yPoint - yPosition);
 		angle += step;
 		radius = radius - 0.2 ;
@@ -291,74 +321,74 @@ void drawSpiral(int xCenter, int yCenter, double radius){
 *   Write the word "LEGO!"
 ********************************************************/
 void WriteLEGO(){
-	moveLinear(10,10);
+	moveLinear(10,10,20);
 	// Letter 'L'
-	moveLinear(10,0);
-	moveLinear(0,40);
-	moveLinear(30,0);
-	moveLinear(0,10);
-	moveLinear(-40,0);
-	moveLinear(0,-55);
+	moveLinear(10,0,20);
+	moveLinear(0,40,20);
+	moveLinear(30,0,20);
+	moveLinear(0,10,20);
+	moveLinear(-40,0,20);
+	moveLinear(0,-55,20);
 
-	moveLinear(60,0);
+	moveLinear(60,0,20);
 
 	// Letter 'E'
-	moveLinear(40,0);
-	moveLinear(0,15);
-	moveLinear(-30,0);
-	moveLinear(0,10);
-	moveLinear(20,0);
-	moveLinear(0,10);
-	moveLinear(-20,0);
-	moveLinear(0,5);
-	moveLinear(30,0);
-	moveLinear(0,10);
-	moveLinear(-40,0);
-	moveLinear(0,-50);
+	moveLinear(40,0,20);
+	moveLinear(0,15,20);
+	moveLinear(-30,0,20);
+	moveLinear(0,10,20);
+	moveLinear(20,0,20);
+	moveLinear(0,10,20);
+	moveLinear(-20,0,20);
+	moveLinear(0,5,20);
+	moveLinear(30,0,20);
+	moveLinear(0,10,20);
+	moveLinear(-40,0,20);
+	moveLinear(0,-50,20);
 
-	moveLinear(60,0);
+	moveLinear(60,0,20);
 
 	// Letter 'G'
-	moveLinear(40,0);
-	moveLinear(0,15);
-	moveLinear(-30,0);
-	moveLinear(0,30);
-	moveLinear(20,0);
-	moveLinear(0,-15);
-	moveLinear(-10,0);
-	moveLinear(0,-10);
-	moveLinear(20,0);
-	moveLinear(0,30);
-	moveLinear(-40,0);
-	moveLinear(0,-50);
+	moveLinear(40,0,20);
+	moveLinear(0,15,20);
+	moveLinear(-30,0,20);
+	moveLinear(0,30,20);
+	moveLinear(20,0,20);
+	moveLinear(0,-15,20);
+	moveLinear(-10,0,20);
+	moveLinear(0,-10,20);
+	moveLinear(20,0,20);
+	moveLinear(0,30,20);
+	moveLinear(-40,0,20);
+	moveLinear(0,-50,20);
 
-	moveLinear(60,0);
+	moveLinear(60,0,20);
 
 	// Letter '0'
-	moveLinear(40,0);
-	moveLinear(0,50);
-	moveLinear(-40,0);
-	moveLinear(0,-55);
-	moveLinear(10,15);
-	moveLinear(20,0);
-	moveLinear(0,30);
-	moveLinear(-20,0);
-	moveLinear(0,-35);
+	moveLinear(40,0,20);
+	moveLinear(0,50,20);
+	moveLinear(-40,0,20);
+	moveLinear(0,-55,20);
+	moveLinear(10,15,20);
+	moveLinear(20,0,20);
+	moveLinear(0,30,20);
+	moveLinear(-20,0,20);
+	moveLinear(0,-35,20);
 
-	moveLinear(60,0);
+	moveLinear(60,0,20);
 
 	// Letter '!'
-	moveLinear(10,0);
-	moveLinear(0,30);
-	moveLinear(-10,0);
-	moveLinear(-30,0);
-	moveLinear(0,40);
-	moveLinear(10,0);
-	moveLinear(0,10);
-	moveLinear(-10,0);
-	moveLinear(0,10);
+	moveLinear(10,0,20);
+	moveLinear(0,30,20);
+	moveLinear(-10,0,20);
+	moveLinear(-30,0,20);
+	moveLinear(0,40,20);
+	moveLinear(10,0,20);
+	moveLinear(0,10,20);
+	moveLinear(-10,0,20);
+	moveLinear(0,10,20);
 
-	moveLinear(-60,100);
+	moveLinear(-60,100,20);
 
 	wait1Msec(10000);
 }
