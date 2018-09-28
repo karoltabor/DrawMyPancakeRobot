@@ -38,8 +38,6 @@ task monitorPlotter()
 
 }
 
-
-// TODO: calibrate simultaneously
 void calibrate() {
 	while(!(getTouchValue(xHome) && getTouchValue(xHome2) && getTouchValue(yHome))) {
 		if(getTouchValue(xHome) == false) {
@@ -467,16 +465,66 @@ void drawSmiley(int xCenter, int yCenter, int radius, int speed){
 /******************************************************
 *		Alfabet
 ******************************************************/
-/******************************************************
-*		Letter L
-******************************************************/
+
+/********************************************************
+*        Letter A
+*********************************************************/
+void drawA(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(letterWidth, letterBoxHeight-(2margin), speed);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(letterWidth, -(letterBoxHeight-(2margin), speed);
+    moveLinear(-letterWidth, 0, speed);
+    moveLinear(-(0.5*letterWidth), 1.5 * letterWidth, speed);
+    moveLinear(-(0.5*letterWidth), -(1.5 * letterWidth), speed);
+    moveLinear(-letterWidth, 0, speed);
+    pressBottle(false);
+    moveLinear(letterWidth, 2 * letterWidth, speed);
+    pressBottle(true);
+    moveLinear(0.5letterWidth, letterWidth, speed);
+    moveLinear(0.5letterWidth, -letterWidth, speed);
+    moveLinear(-letterWidth, 0, speed);
+}
+/********************************************************
+*        Letter B
+*********************************************************/
+void drawB(int speed){
+    pressBotle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(0, letterBoxHeight-(2margin), speed);
+    moveLinear(3letterWidth), 0, speed);
+    moveLinear(0, 1.5*letterWidth, speed);
+    moveLinear(-letterWidth, -(0.5 * letterWidth), speed);
+    moveLinear(letterWidth, -(0.5 * letterWidth), speed);
+    moveLinear(0, 1.5letterWidth, speed);
+    moveLinear(-(3letterWidth), 0, speed);
+    pressBottle(false);
+    moveLinear(letterWidth, 2.5letterWidth, speed);
+    pressBottle(true);
+    moveLinear(0, 0.75letterWidth, speed);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(-letterWidth, -(0.75letterWidth), speed);
+    pressBottle(false);
+    moveLinear(0, -letterWidth, speed);
+    pressBottle(true);
+    moveLinear(0, -(0.75letterWidth), speed);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(-letterWidth, 0.75*letterWidth, speed);
+}
+
+/********************************************************
+*        Letter L
+*********************************************************/
 void drawL(int speed){
-	pressBottle(false);
-	moveLinear(margin,margin,speed);
-	pressBottle(true);
-	moveLinear(0, letterBoxHeight-(2*margin), speed);
-	moveLinear(letterWidth, 0 , speed);
-	moveLinear(-margin, -margin, speed);
+    pressBottle(false);
+    moveLinear(margin,margin,speed);
+    pressBottle(true);
+    moveLinear(0, letterBoxHeight-(2margin), speed);
+    moveLinear(letterWidth, 0 , speed);
+    moveLinear(0, -((letterBoxHeight-(2margin))+ letterwidth), speed);
 }
 
 /********************************************************
