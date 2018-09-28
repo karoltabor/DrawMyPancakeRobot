@@ -224,7 +224,7 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 void moveEllipse (int xCenter, int yCenter, int xradius, int yradius, int finalangle, int speed){
     int preSin = 1;
     int preCos = 1;
-    int radius = 1;
+    int radius;
     int angle = 0;
     int step = 4;
 
@@ -235,12 +235,14 @@ void moveEllipse (int xCenter, int yCenter, int xradius, int yradius, int finala
     else if (xradius < yradius){
         preCos = yradius/xradius;
         radius = xradius;
-
+    } else {
+        radius = xradius;
     }
-    moveLinear(xCenter, yCenter-yradius, speed);
+    writeDebugStreamLine("radius: %d", radius);
+    displayBigTextLine(3, "Test1");
     while (angle <= finalangle){
-        int xPoint = xCenter + radius * (preSin * sinDegrees(angle);
-        int yPoint = yCenter + radius * (preCos * -cosDegrees(angle);
+        int xPoint = xCenter + radius * (preSin * sinDegrees(angle));
+        int yPoint = yCenter + radius * (preCos * -cosDegrees(angle));
 
 				moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
         angle += step;
@@ -434,7 +436,7 @@ void WriteLEGO(){
 ********************************************************/
 void drawSmiley(int xCenter, int yCenter, int radius, int speed){
     pressBottle(false);
-    moveLinear(xCenter, yCenter-radius, speed)
+    moveLinear(xCenter, yCenter-radius, speed);
 
     pressBottle(true);
     moveEllipse(xCenter, yCenter, radius, radius, 360, speed);
@@ -445,7 +447,7 @@ void drawSmiley(int xCenter, int yCenter, int radius, int speed){
 
     pressBottle(true);
     moveEllipse(xCenter, yCenter- (0.3 * radius), 0.5 * radius, 0.35 * radius, 180, speed);
-    moveLinear(-radius, 0, speed)
+    moveLinear(-radius, 0, speed);
 
     pressBottle(false);
     moveLinear(0.1875 * radius, 0.3 * radius, speed);

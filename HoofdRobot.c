@@ -44,8 +44,9 @@ task main()
 				} else if (strcmp(msgBufIn, "Right") == 0) {
 				setMotorSyncEncoder(motorA, motorB, -50, 50, 50);
 				} else if (strcmp(msgBufIn, "Circle") == 0) {
-				//moveCircle(60, 60, 50, 360, 20);
+				moveEllipse(60, 100, 50, 50, 360, 20);
 				//drawSmiley(50, 50, 50, 20);
+				//fillCircle(100, 20, 5, 50);
 				} else if (strcmp(msgBufIn, "Heart") == 0) {
 				drawHeart(100);
 				} else if (strcmp(msgBufIn, "Square") == 0) {
