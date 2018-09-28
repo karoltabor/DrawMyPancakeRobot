@@ -19,9 +19,9 @@ int gridHeight = 700;
 int factor = 5;
 int unprecision = 5;
 int margin = 20;
-int letterBoxWidth = 100;
-int letterBoxHeight = 100;
-int letterWidth = 20; // formula: (letterBoxWidth-(2*margin))/3;
+int letterBoxWidth;
+int letterBoxHeight;
+int letterWidth; // formula: (letterBoxWidth-(2*margin))/3;
 
 
 /*******************************************************
@@ -122,7 +122,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 	float ratio;
 	if(amountToMoveX == 0 || amountToMoveY == 0){
 		ratio = 1;
-	} else {
+		} else {
 		ratio = (float) amountToMoveX / amountToMoveY;
 	}
 	int xSpeed;
@@ -130,10 +130,10 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 	if(ratio>1){
 		xSpeed = speed;
 		ySpeed = abs(speed / ratio);
-	} else if (ratio<1){
+		} else if (ratio<1){
 		xSpeed = abs(speed * ratio);
 		ySpeed = speed;
-	} else {
+		} else {
 		xSpeed = speed;
 		ySpeed = speed;
 	}
@@ -188,15 +188,15 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 
 	pressBottle(true);
 	for (int i = 0; i < diameter; i += 5) {
-	    if (left) {
-	        moveLinear(i * 2, 0, speed);
-	        moveLinear(steps, steps, speed);
-	        left = false;
-	    } else {
-	        moveLinear(-i * 2, 0, speed);
-	        moveLinear(-steps, steps, speed);
-	        left = true;
-	    }
+		if (left) {
+			moveLinear(i * 2, 0, speed);
+			moveLinear(steps, steps, speed);
+			left = false;
+			} else {
+			moveLinear(-i * 2, 0, speed);
+			moveLinear(-steps, steps, speed);
+			left = true;
+		}
 	}
 	pressBottle(false);
 }
@@ -409,41 +409,69 @@ void drawL(int speed){
 	pressBottle(true);
 	moveLinear(0, letterBoxHeight-(2*margin), speed);
 	moveLinear(letterWidth, 0 , speed);
-
+	moveLinear(-margin, -margin, speed);
 }
 
 /********************************************************
-*   LEGO Mindstorms NXT X-Y Plotter
+*   Vakken letters
 ********************************************************/
-/*task main()
-{
-eraseDisplay();
-startTask(monitorPlotter);
-wait1Msec(2000);
-pressBottle(false);
-calibrateY();
-calibrateX();
-wait1Msec(2000);
 
-// Write the Word "LEGO!"
-WriteLEGO();
+void makeFields(){
+	letterBoxHeight = gridHeight - margin*2;
+	letterBoxWidth = gridWidth/6 - margin*2;
+	letterWidth = (letterBoxWidth-(2*margin))/3;
+}
 
-// Move Back to show Drawing
-calibrateX();
-moveLinear(0,150);
+/*void writeText(string text, int speed) {
+	char *chars = text;
+	//add spaces to center text
 
-wait1Msec(20000); // Wait 20 Seconds to Change Paper
+	makeFields();
+	moveLinear(margin, margin, 20);
 
-// Begin Drawing Squares
-drawSquares();
+	for(int i = 0; i < strlen(text);i++){
+		switch(chars[i]){
+		case "a": drawA(speed);break;
+		case "b": drawB(speed);break;
+		case "c": drawC(speed);break;
+		case "d": drawD(speed);break;
+		case "e": drawE(speed);break;
+		case "f": drawF(speed);break;
+		case "g": drawG(speed);break;
+		case "h": drawH(speed);break;
+		case "i": drawI(speed);break;
+		case "j": drawJ(speed);break;
+		case "k": drawK(speed);break;
+		case "l": drawL(speed);break;
+		case "m": drawM(speed);break;
+		case "n": drawN(speed);break;
+		case "o": drawO(speed);break;
+		case "p": drawP(speed);break;
+		case "q": drawQ(speed);break;
+		case "r": drawR(speed);break;
+		case "s": drawS(speed);break;
+		case "t": drawT(speed);break;
+		case "u": drawU(speed);break;
+		case "v": drawV(speed);break;
+		case "w": drawW(speed);break;
+		case "x": drawX(speed);break;
+		case "y": drawY(speed);break;
+		case "z": drawZ(speed);break;
 
-// Move Back to show Drawing
-calibrateX();
-moveLinear(0,150);
+		case "0": draw0(speed);break;
+		case "1": draw1(speed);break;
+		case "2": draw2(speed);break;
+		case "3": draw3(speed);break;
+		case "4": draw4(speed);break;
+		case "5": draw5(speed);break;
+		case "6": draw6(speed);break;
+		case "7": draw7(speed);break;
+		case "8": draw8(speed);break;
+		case "9": draw9(speed);break;
 
-wait1Msec(20000); // Wait 20 Seconds to Change Paper
+		default: break;
 
-pressBottle(false);
-calibrateY();
-calibrateX();
+		}
+		moveLinear(letterBoxWidth, 0 , speed);
+	}
 }*/

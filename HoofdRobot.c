@@ -19,6 +19,7 @@ task main()
 	openMailboxIn("EV3_INBOX0");
 	openMailboxOut("EV3_OUTBOX0");
 
+
 	while (true)
 	{
 		// Read input message.
@@ -29,40 +30,37 @@ task main()
 			writeDebugStreamLine(msgBufIn);
 			// Here fill your incoming message handling.
 			// For example when message "Forward" is received, the EV3 should move forward.
-			if(strcmp(msgBufIn,"Forward") == 0)
-			{
-				setMotorSyncEncoder(motorA, motorB, 0, 50, 50);
-			}
-			if(strcmp(msgBufIn,"Backward") == 0)
-			{
-				setMotorSyncEncoder(motorA, motorB, 0, -50, -50);
-			}
-			if(strcmp(msgBufIn,"Left") == 0)
-			{
-				setMotorSyncEncoder(motorA, motorB, 50, 50, 50);
-			}
-			if(strcmp(msgBufIn,"Right") == 0)
-			{
-				setMotorSyncEncoder(motorA, motorB, -50, 50, 50);
-			}
-			if(strcmp(msgBufIn,"Rond") == 0)
-			{
-				eraseDisplay();
-				startTask(monitorPlotter);
-				wait1Msec(2000);
-				calibrate();
-				wait1Msec(2000);
-				moveCircle(60, 60, 50, 360, 20);
-				wait1Msec(1000);
+			eraseDisplay();
+			startTask(monitorPlotter);
+			wait1Msec(2000);
+			calibrate();
 
-				calibrate();
-			}
+			if (strcmp(msgBufIn, "Forward ") == 0) {
+				setMotorSyncEncoder(motorA, motorB, 0, 50, 50);
+				} else if (strcmp(msgBufIn, "Backward") == 0) {
+				setMotorSyncEncoder(motorA, motorB, 0, -50, -50);
+				} else if (strcmp(msgBufIn, "Left") == 0) {
+				setMotorSyncEncoder(motorA, motorB, 50, 50, 50);
+				} else if (strcmp(msgBufIn, "Right") == 0) {
+				setMotorSyncEncoder(motorA, motorB, -50, 50, 50);
+				} else if (strcmp(msgBufIn, "Circle") == 0) {
+				moveCircle(60, 60, 50, 360, 20);
+				} else if (strcmp(msgBufIn, "Heart") == 0) {
+				drawHeart(100);
+				} else if (strcmp(msgBufIn, "Square") == 0) {
+				//drawSquare(30);
+				fillCircle(70, 20, 5, 20);
+				} else if (strcmp(msgBufIn, "Triangle") == 0) {
+				drawTriangle(30, 40);
+			} else if (strcmp(msgBufIn, "Text") == 0) {}
+			wait1Msec(1000);
+			calibrate();
 		}
 		else
 		{
-
 			displayBigTextLine(8, "empty message!");
 		}
+
 
 		// Here fill your outgoing message handling.
 		// This means sending the distance in cm measured by the ultrasonic sensor
