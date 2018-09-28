@@ -8,7 +8,7 @@ void calibrateX();
 void calibrateY();
 void pressBottle(bool enabled);
 void moveLinear(int amountToMoveX, int amountToMoveY, int speed);
-void moveCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed);
+void moveEllipse(int xCenter, int yCenter, int xradius, int yradius, int finalangle, int speed);
 
 
 bool penPosition = false;
@@ -204,7 +204,7 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 /********************************************************
 *   Move circular
 ********************************************************/
-void moveCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed){
+/*void moveCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed){
 	moveLinear(xCenter, yCenter-radius,speed);
 	int angle = 0;
 	int step = 4;
@@ -214,6 +214,38 @@ void moveCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed)
 		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
 		angle += step;
 	}
+
+}*/
+
+
+/********************************************************
+*   Move Elipse
+********************************************************/
+void moveEllipse (int xCenter, int yCenter, int xradius, int yradius, int finalangle, int speed){
+    int preSin = 1;
+    int preCos = 1;
+    int radius = 1;
+    int angle = 0;
+    int step = 4;
+
+    if (xradius > yradius){
+        preSin = xradius/yradius;
+        radius = yradius;
+    }
+    else if (xradius < yradius){
+        preCos = yradius/xradius;
+        radius = xradius;
+
+    }
+    moveLinear(xCenter, yCenter-yradius, speed);
+    while (angle <= finalangle){
+        int xPoint = xCenter + radius * (preSin * sinDegrees(angle);
+        int yPoint = yCenter + radius * (preCos * -cosDegrees(angle);
+
+				moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
+        angle += step;
+
+    }
 
 }
 
@@ -395,6 +427,39 @@ void WriteLEGO(){
 	moveLinear(-60,100,20);
 
 	wait1Msec(10000);
+}
+
+/********************************************************
+*		Draw Smiley
+********************************************************/
+void drawSmiley(int xCenter, int yCenter, int radius, int speed){
+    pressBottle(false);
+    moveLinear(xCenter, yCenter-radius, speed)
+
+    pressBottle(true);
+    moveEllipse(xCenter, yCenter, radius, radius, 360, speed);
+    pressBottle(false);
+    float mouthstartx = xCenter - (0.075 * radius);
+    float mouthstarty = yCenter - (0.5 * radius);
+    moveLinear(mouthstartx - xPosition, mouthstarty - yPosition, speed);
+
+    pressBottle(true);
+    moveEllipse(xCenter, yCenter- (0.3 * radius), 0.5 * radius, 0.35 * radius, 180, speed);
+    moveLinear(-radius, 0, speed)
+
+    pressBottle(false);
+    moveLinear(0.1875 * radius, 0.3 * radius, speed);
+
+    pressBottle(true);
+    moveEllipse(xCenter - (0.3125 * radius), yCenter + (0.25 * radius), 0.1875 * radius, 0.25 * radius, 360, speed);
+
+    pressBottle(false);
+    moveLinear(0.625 * radius, 0, speed);
+
+    pressBottle(true);
+    moveEllipse(xCenter - (0.3125 * radius), yCenter + (0.25 * radius), 0.1875 * radius, 0.25 * radius, 360, speed);
+
+    pressBottle(false);
 }
 
 /******************************************************
