@@ -8,6 +8,7 @@ void calibrateX();
 void calibrateY();
 void pressBottle(bool enabled);
 void moveLinear(int amountToMoveX, int amountToMoveY, int speed);
+void moveCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed);
 
 
 bool penPosition = false;
@@ -189,11 +190,11 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 	for (int i = 0; i < diameter; i += 5) {
 	    if (left) {
 	        moveLinear(i * 2, 0, speed);
-	        moveLinear(step, step, speed);
+	        moveLinear(steps, steps, speed);
 	        left = false;
 	    } else {
 	        moveLinear(-i * 2, 0, speed);
-	        moveLinear(-step, step, speed);
+	        moveLinear(-steps, steps, speed);
 	        left = true;
 	    }
 	}
@@ -203,7 +204,7 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 /********************************************************
 *   Move circular
 ********************************************************/
-void drawCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed){
+void moveCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed){
 	moveLinear(xCenter, yCenter-radius,speed);
 	int angle = 0;
 	int step = 4;
@@ -303,7 +304,7 @@ void drawStar(int outerRadius, int innerRadius, int speed){
 /********************************************************
 *		Draw Spiral
 ********************************************************/
-void drawSpiral(int xCenter, int yCenter, double radius, int speed){
+void drawSpiral(int xCenter, int yCenter, float radius, int speed){
 	moveLinear(xCenter, yCenter-radius,speed);
 	int angle = 0;
 	int step = 5;
