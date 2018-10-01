@@ -199,21 +199,69 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 	pressBottle(false);
 }
 
-/********************************************************
-*   Move circular
-********************************************************/
-/*void moveCircle(int xCenter, int yCenter, int radius, int finalAngle, int speed){
-	moveLinear(xCenter, yCenter-radius,speed);
-	int angle = 0;
-	int step = 4;
-	while(angle <=finalAngle){
-		int xPoint = xCenter + radius * sinDegrees(angle);
-		int yPoint = yCenter + radius * -cosDegrees(angle);
-		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
-		angle += step;
-	}
 
-}*/
+/********************************************************
+*   Free draw functions
+********************************************************/
+char* removeLeadingZeros(char *coord){
+	string coordString = coord;
+	while(coord[0] == '0'){
+		if(strlen(coordString)>1){
+			coordString = coord;
+			stringDelete(coordString, 0, 1);
+			coord = coordString;
+		}
+		else {
+				break;
+		}
+	}
+	coordString = coord;
+	return coordString;
+}
+
+void freeDraw(char *input) {
+	int count = 0;
+	
+	//for each instuction of 9 characters
+	while(count < (strlen(input)/9)){
+		string instruction;
+		strcpy(instruction, input);
+		stringDelete(instruction, 0, count*9);
+		stringDelete(instruction, 9, strlen(instruction)-9);
+
+		//split instruction into x-coordinate, y-coordinate and a boolean for the bottle press function
+		string xCoor, yCoor, bottlePressed;
+		strcpy(xCoor, instruction);
+		stringDelete(xCoor, 4 , 5);
+		strcpy(yCoor, instruction);
+		stringDelete(yCoor, 0 , 4);
+		stringDelete(yCoor, 4 , 1);
+		strcpy(bottlePressed, instruction);
+		stringDelete(bottlePressed, 0 , 8);
+
+		char *xCoorArr = xCoor;
+		char *yCoorArr = yCoor;
+
+		xCoor = removeLeadingZeros(xCoorArr);
+		yCoor = removeLeadingZeros(yCoorArr);
+
+		bool bottle;
+		if(bottlePressed == "T"){
+			bottle = true;
+			} else {
+			bottle = false;
+		}
+		
+		//execute instruction
+		//pressBottle(bottle);
+		//moveLinear(xCoor, yCoor, 20);
+		writeDebugStreamLine("xCoor: %s", xCoor);	
+		writeDebugStreamLine("yCoor: %s", yCoor);	
+		writeDebugStreamLine("bottlePressed: %d", bottle);
+
+		count++;
+	}
+}
 
 
 /********************************************************
@@ -550,8 +598,8 @@ void drawE(int speed){
     pressBottle(true);
     moveLinear(3* letterWidth, 0, speed);
     moveLinear(0, 2 * letterWidth, speed);
-    moveLinear(-(2.5 * letterWidth, 0, speed);
-    pressBottle(false)
+    moveLinear(-(2.5 * letterWidth), 0, speed);
+    pressBottle(false);
     moveLinear(2.5 * letterWidth, 0, speed);
     pressBottle(true);
     moveLinear(0, 2 * letterWidth, speed);
@@ -962,7 +1010,7 @@ void draw3(int speed){
     moveLinear(3*letterWidth, 0.5*letterWidth, speed);
     pressBottle(true);
     moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
-    moveLinear(-(2*letterWidth, 0, speed);
+    moveLinear(-(2*letterWidth), 0, speed);
     moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
     moveLinear(0, 1.25*letterWidth, speed);
     moveLinear(0.25*letterWidth, 0.25*letterWidth, speed);
@@ -1060,7 +1108,7 @@ void draw8(int speed){
     moveLinear(2*letterWidth, 0, speed);
     moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
     moveLinear(0, letterWidth, speed);
-    moveLinear(-(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
     moveLinear(-(2*letterWidth), 0, speed);
     moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
     moveLinear(0, letterWidth, speed);
