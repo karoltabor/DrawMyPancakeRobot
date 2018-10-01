@@ -475,44 +475,198 @@ void drawA(int speed){
     pressBottle(true);
     moveLinear(letterWidth, letterBoxHeight-(2margin), speed);
     moveLinear(letterWidth, 0, speed);
-    moveLinear(letterWidth, -(letterBoxHeight-(2margin), speed);
-    moveLinear(-letterWidth, 0, speed);
-    moveLinear(-(0.5*letterWidth), 1.5 * letterWidth, speed);
-    moveLinear(-(0.5*letterWidth), -(1.5 * letterWidth), speed);
-    moveLinear(-letterWidth, 0, speed);
+    moveLinear(letterWidth, -(letterBoxHeight-(2margin)), speed);
     pressBottle(false);
-    moveLinear(letterWidth, 2 * letterWidth, speed);
+    movelinear(-(0.5 * letterWidth), 0.5 * (letterBoxHeight-(2margin)), speed);
     pressBottle(true);
-    moveLinear(0.5letterWidth, letterWidth, speed);
-    moveLinear(0.5letterWidth, -letterWidth, speed);
-    moveLinear(-letterWidth, 0, speed);
-}
+    moveLinear(-2 * letterWidth, 0, speed);
+    pressBottle(false);
+  }
 /********************************************************
 *        Letter B
 *********************************************************/
 void drawB(int speed){
-    pressBotle(false);
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0.6 * letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(-(0.6 * letterWidth), 0.6 * letterWidth, speed);
+    moveLinear(0 ,letterWidth, speed);
+    moveLinear(0.4 * letterWidth, 0.4 * letterWidth, speed);
+    moveLinear(2.6 * letterWidth, 0, speed);
+    pressBottle(false);
+    moveLinear(-(2.6 * letterWidth), 0, speed);
+    pressBottle(true);
+    moveLinear(-(0.4* letterWidth), 0.4 * letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(0.6 * letterWidth, 0.6 * letterWidth, speed);
+    moveLinear(2.4 * letterWidth, 0, speed);
+    moveLinear(0, -(4 * letterWidth), speed);
+    moveLinear(-(2.4 * letterWidth), 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*        Letter C
+*********************************************************/
+void drawC(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0, letterWidth, speed);
+    pressBottle(true);
+    moveLinear(letterWidth, -letterWidth, speed);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(letterWidth, letterWidth, speed);
+    moveLinear(0, 2 * letterWidth, speed);
+    moveLinear(-letterWidth, letterWidth, speed);
+    moveLinear(-letterWidth, 0, speed);
+    moveLinear(-letterWidth, -letterWidth, speed);
+    pressBottle(false);
+}
+
+ /********************************************************
+*        Letter D
+*********************************************************/
+void drawD(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(-letterWidth, letterWidth, speed);
+    moveLinear(0, 2* letterWidth, speed);
+    moveLinear(letterWidth, letterWidth, speed);
+    moveLinear(2 * letterWidth, 0, speed);
+    moveLinear(0, 4 * letterWidth, speed);
+    moveLinear(-(2 * letterWidth), 0, speed);
+    pressBottle(false)
+}
+
+/********************************************************
+*				Letter E
+********************************************************/
+void drawE(int speed){
+    pressBottle(false);
     moveLinear(margin, margin, speed);
     pressBottle(true);
-    moveLinear(0, letterBoxHeight-(2margin), speed);
-    moveLinear(3letterWidth), 0, speed);
-    moveLinear(0, 1.5*letterWidth, speed);
-    moveLinear(-letterWidth, -(0.5 * letterWidth), speed);
-    moveLinear(letterWidth, -(0.5 * letterWidth), speed);
-    moveLinear(0, 1.5letterWidth, speed);
-    moveLinear(-(3letterWidth), 0, speed);
-    pressBottle(false);
-    moveLinear(letterWidth, 2.5letterWidth, speed);
+    moveLinear(3* letterWidth, 0, speed);
+    moveLinear(0, 2 * letterWidth, speed);
+    moveLinear(-(2.5 * letterWidth, 0, speed);
+    pressBottle(false)
+    moveLinear(2.5 * letterWidth, 0, speed);
     pressBottle(true);
-    moveLinear(0, 0.75letterWidth, speed);
-    moveLinear(letterWidth, 0, speed);
-    moveLinear(-letterWidth, -(0.75letterWidth), speed);
+    moveLinear(0, 2 * letterWidth, speed);
+    moveLinear(-(3 * letterWidth), 0, speed);
     pressBottle(false);
-    moveLinear(0, -letterWidth, speed);
+}
+
+/********************************************************
+*				Letter F
+********************************************************/
+void drawF(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(3 * letterWidth, 0, speed);
     pressBottle(true);
-    moveLinear(0, -(0.75letterWidth), speed);
+    moveLinear(0, 2 * letterWidth, speed);
+    moveLinear(-(2.5 * letterWidth), 0, speed);
+    pressBottle(false);
+    moveLinear(2.5 * letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(0, 2 * letterWidth, speed);
+    moveLinear(-(3 * letterWidth), 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter G
+********************************************************/
+void drawG(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0, 3 * letterWidth, speed);
+    pressBottle(true);
+    moveLinear(letterWidth, letterWidth, speed);
     moveLinear(letterWidth, 0, speed);
-    moveLinear(-letterWidth, 0.75*letterWidth, speed);
+    moveLinear(letterWidth, -letterWidth, speed);
+    moveLinear(0, -(2 * letterWidth), speed);
+    movelinear(-letterWidth, -letterWidth, speed);
+    moveLinear(-letterWidth, 0, speed);
+    moveLinear(-letterWidth, letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(letterWidth, 0, speed);
+    pressBottle(false)
+}
+
+/********************************************************
+*				Letter H
+********************************************************/
+void drawH(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(0, 4 * letterWidth, speed);
+    pressBottle(false);
+    moveLinear(0, -(2 * letterWidth), speed);
+    pressBottle(true);
+    moveLinear(3 * letterWidth, 0, speed);
+    moveLinear(0, 2*letterWidth, speed);
+    pressBottle(false);
+    moveLinear(0, -(2* letterWidth), speed);
+    pressBottle(true);
+    moveLinear(0, -(2* letterWidth), speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter I
+********************************************************/
+void drawI(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(1.5 * letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(0, 2.75 * letterWidth, speed);
+    pressBottle(false);
+    moveLinear(0, 0.5 * letterWidth, speed);
+    pressBottle(true);
+    moveLinear(0, 0.75 * letterWidth, speed);
+    presBottle(false);
+}
+
+/********************************************************
+*				Letter J
+********************************************************/
+void drawJ(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0, 4* letterWidth, speed);
+    pressBottle(true);
+    moveLinear(0, -(3 * letterWidth), speed);
+    moveLinear(letterWidth, -letterWidth, speed);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(letterWidth, letterWidth, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter K
+********************************************************/
+void drawK(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(2*letterWidth, 2*letterWidth, speed);
+    moveLinear(-(2*letterWidth), 2*letterWidth, speed);
+    pressBottle(false);
+    moveLinear(2*letterWidth, -(2*letterWidth), speed);
+    pressBottle(true);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(0, 2 * letterWidth, speed);
+    pressBottle(false);
+    moveLinear(0, -(2*letterWidth), speed);
+    pressBottle(true);
+    moveLinear(0, -(2*letterWidth), speed);
+    pressBottle(false);
 }
 
 /********************************************************
@@ -522,11 +676,422 @@ void drawL(int speed){
     pressBottle(false);
     moveLinear(margin,margin,speed);
     pressBottle(true);
-    moveLinear(0, letterBoxHeight-(2margin), speed);
-    moveLinear(letterWidth, 0 , speed);
-    moveLinear(0, -((letterBoxHeight-(2margin))+ letterwidth), speed);
+		moveLinear(3*letterWidth, 0, speed);
+		moveLinear(0, 4*letterWidth, speed);
+		pressBottle(false);
 }
 
+/********************************************************
+*				Letter M
+********************************************************/
+void drawM(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(0, 4*letterWidth, speed);
+    moveLinear(1.5*letterWidth, -(2*letterWidth), speed);
+    moveLinear(1.5*letterWidth, 2*letterWidth, speed);
+    moveLinear(0, -(4*letterWidth), speed);
+  	pressBottle(false);
+}
+
+/********************************************************
+*				Letter N
+********************************************************/
+void drawN(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(3*letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(0, 4*letterWidth, speed);
+    moveLinear(-(3* letterWidth), -(4*letterWidth), speed);
+    moveLinear(0, 4*letterWidth, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter O
+********************************************************/
+void drawO(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(letterWidth, letterWidth, speed);
+    moveLinear(0, 2*letterWidth, speed);
+    moveLinear(-letterWidth, letterWidth, speed);
+    moveLinear(-letterWidth, 0, speed);
+    moveLinear(-letterWidth, -letterWidth, speed);
+    moveLinear(0, -(2*letterWidth), speed);
+    moveLinear(letterWidth, -letterWidth, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter P
+********************************************************/
+void drawP(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(3*letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(0, 4*letterWidth, speed);
+    moveLinear(-(2.5*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    moveLinear(0, -letterWidth, speed);
+    moveLinear(0.5 * letterWidth, -(0.5*letterWidth), speed);
+    moveLinear(2.5*letterWidth, 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter Q
+********************************************************/
+void drawQ(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(letterWidth, letterWidth, speed);
+    pressBottle(false);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    pressBottle(true);
+    moveLinear(0.5*letterWidth, -(0.5*letterWidth), speed);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(letterWidth, letterWidth, speed);
+    moveLinear(0, 2*letterWidth, speed);
+    moveLinear(-letterWidth, letterWidth, speed);
+    moveLinear(-letterWidth, 0, speed);
+    moveLinear(-letterWidth, -letterWidth, speed);
+    moveLinear(0, -(2*letterWidth), speed);
+    moveLinear(0.5*letterWidth, -(0.5*letterWidth), speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter R
+********************************************************/
+void drawR(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(2*letterWidth, 2*letterWidth, speed);
+    moveLinear(-(1.5*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2.5*letterWidth, 0, speed);
+    moveLinear(0, -(4*letterWidth), speed);
+    pressBottle(false);
+    moveLinear(0, 2*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(-letterWidth, 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter S
+********************************************************/
+void drawS(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(3*letterWidth, 0.5*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    moveLinear(-(2*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2*letterWidth, 0, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(-(2*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter T
+********************************************************/
+void drawT(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(1.5*letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(0, 4*letterWidth, speed);
+    moveLinear(1.5*letterWidth, 0, speed);
+    pressBottle(false);
+    moveLinear(-(1.5*letterWidth), 0, speed);
+    pressBottle(true);
+    moveLinear(-(1.5*letterWidth), 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter U
+********************************************************/
+void drawU(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0, 4*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(0, -(3*letterWidth), speed);
+    moveLinear(letterWidth, -letterWidth, speed);
+    moveLinear(letterWidth, 0, speed);
+    moveLinear(letterWidth, letterWidth, speed);
+    moveLinear(0, 3*letterWidth, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter V
+********************************************************/
+void drawV(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0, 4*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(1.5*letterWidth, -(4*letterWidth), speed);
+    moveLinear(1.5*letterWidth, 4*letterWidth, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter W
+********************************************************/
+void drawW(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0, 4*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(0.75*letterWidth, -(4*letterWidth), speed);
+    moveLinear(0.75*letterWidth, 4*letterWidth, speed);
+    moveLinear(0.75*letterWidth, -(4*letterWidth), speed);
+    moveLinear(0.75*letterWidth, 4*letterWidth, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter X
+********************************************************/
+void drawX(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(3*letterWidth, 4*letterWidth, speed);
+    pressBottle(false);
+    moveLinear(-(3*letterWidth), 0, speed);
+    pressBottle(true);
+    moveLinear(3*letterWidth, -(4*letterWidth), speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter Y
+********************************************************/
+void drawY(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(1.5*letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(0, 1.5*letterWidth, speed);
+    moveLinear(1.5*letterWidth, 2.5*letterWidth, speed);
+    pressBottle(false);
+    moveLinear(-(3*letterWidth), 0, speed);
+    pressBottle(true);
+    moveLinear(1.5*letterWidth, -(2.5*letterWidth), speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Letter Z
+********************************************************/
+void drawZ(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(3*letterWidth, 0, speed);
+    moveLinear(-(3*letterWidth), 4*letterWidth, speed);
+    moveLinear(3*letterWidth, 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Cijfer 1
+********************************************************/
+void draw1(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0.7*letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(1.6*letterWidth, 0, speed);
+    pressBottle(false);
+    moveLinear(-(0.8*letterWidth), 0, speed);
+    pressBottle(true);
+    moveLinear(0, 4*letterWidth, speed);
+    moveLinear(0.8*letterWidth, -(0.8*letterWidth), speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Cijfer 2
+********************************************************/
+void draw2(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    pressBottle(true);
+    moveLinear(3*letterWidth, 0, speed);
+    moveLinear(0, 1.5*letterWidth, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(-(2*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2*letterWidth, 0, speed);
+    moveLinear(0.5*letterWidth, -(0.5*letterWidth), speed);
+}
+
+
+/********************************************************
+*				Cijfer 3
+********************************************************/
+void draw3(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(3*letterWidth, 0.5*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    moveLinear(-(2*letterWidth, 0, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(0, 1.25*letterWidth, speed);
+    moveLinear(0.25*letterWidth, 0.25*letterWidth, speed);
+    moveLinear(1.5*letterWidth, 0, speed);
+    pressBottle(false);
+    moveLinear(-(1.5*letterWidth), 0, speed);
+    pressBottle(true);
+    moveLinear(-(0.25*letterWidth), 0.25*letterWidth, speed);
+    moveLinear(0, 1.25*letterWidth, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2*letterWidth, 0, speed);
+    moveLinear(0.5*letterWidth, -(0.5*letterWidth), speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Cijfer 4
+********************************************************/
+void draw4(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(2*letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(0, 4*letterWidth, speed);
+    moveLinear(-(2*letterWidth), -(2*letterWidth), speed);
+    moveLinear(3*letterWidth, 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Cijfer 5
+********************************************************/
+void draw5(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(3*letterWidth, 0.5*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    moveLinear(-(2*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2*letterWidth, 0, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(0, 1.5*letterWidth, speed);
+    moveLinear(-(3*letterWidth), 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Cijfer 6
+********************************************************/
+void draw6(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0, 3.5*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2*letterWidth, 0, speed);
+    moveLinear(0.5*letterWidth, -(0.5*letterWidth), speed);
+    moveLinear(0, -(3*letterWidth), speed);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    moveLinear(-(2*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2.5*letterWidth, 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Cijfer 7
+********************************************************/
+void draw7(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(1.5*letterWidth, 0, speed);
+    pressBottle(true);
+    moveLinear(-(1.5*letterWidth), 4*letterWidth, speed);
+    moveLinear(3*letterWidth, 0, speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Cijfer 8
+********************************************************/
+void draw8(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(0.5*letterWidth, 2*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    moveLinear(0, -letterWidth, speed);
+    moveLinear(0.5*letterWidth, -(0.5*letterWidth), speed);
+    moveLinear(2*letterWidth, 0, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(-(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(-(2*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(0, letterWidth, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2*letterWidth, 0, speed);
+    moveLinear(0.5*letterWidth, -(0.5*letterWidth), speed);
+    moveLinear(0, -letterWidth, speed);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    pressBottle(false);
+}
+
+/********************************************************
+*				Cijfer 9
+********************************************************/
+void draw9(int speed){
+    pressBottle(false);
+    moveLinear(margin, margin, speed);
+    moveLinear(3*letterWidth, 0.5*letterWidth, speed);
+    pressBottle(true);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    moveLinear(-(2*letterWidth), 0, speed);
+    moveLinear(-(0.5*letterWidth), 0.5*letterWidth, speed);
+    moveLinear(0, 3*letterWidth, speed);
+    moveLinear(0.5*letterWidth, 0.5*letterWidth, speed);
+    moveLinear(2*letterWidth, 0, speed);
+    moveLinear(0.5*letterWidth, -(0.5*letterWidth), speed);
+    moveLinear(0, -letterWidth, speed);
+    moveLinear(-(0.5*letterWidth), -(0.5*letterWidth), speed);
+    moveLinear(-(2.5*letterWidth), 0, speed);
+    pressBottle(false);
+}
 /********************************************************
 *   Vakken letters
 ********************************************************/
@@ -573,7 +1138,7 @@ void makeFields(){
 		case "y": drawY(speed);break;
 		case "z": drawZ(speed);break;
 
-		case "0": draw0(speed);break;
+		case "0": drawO(speed);break;
 		case "1": draw1(speed);break;
 		case "2": draw2(speed);break;
 		case "3": draw3(speed);break;
