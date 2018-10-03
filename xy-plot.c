@@ -221,7 +221,7 @@ char* removeLeadingZeros(char *coord){
 
 void freeDraw(char *input) {
 	int count = 0;
-	
+
 	//for each instuction of 9 characters
 	while(count < (strlen(input)/9)){
 		string instruction;
@@ -251,12 +251,12 @@ void freeDraw(char *input) {
 			} else {
 			bottle = false;
 		}
-		
+
 		//execute instruction
 		//pressBottle(bottle);
 		//moveLinear(xCoor, yCoor, 20);
-		writeDebugStreamLine("xCoor: %s", xCoor);	
-		writeDebugStreamLine("yCoor: %s", yCoor);	
+		writeDebugStreamLine("xCoor: %s", xCoor);
+		writeDebugStreamLine("yCoor: %s", yCoor);
 		writeDebugStreamLine("bottlePressed: %d", bottle);
 
 		count++;
@@ -399,6 +399,42 @@ void drawSpiral(int xCenter, int yCenter, float radius, int speed){
 			angle = 0;
 		}
 	}
+}
+
+/********************************************************
+*		Draw Eiffel Tower
+********************************************************/
+
+void drawEiffel(int heigth){
+	int boxDrawWidth = height/9;
+	pressBottle(false);
+	moveLinear(20, 20, speed);
+	pressBottle(true);
+	moveLinear(boxDrawWidth, 2*boxDrawWidth, speed);
+	moveLinear(-(0.2*boxDrawWidth), 0, speed);
+	moveLinear(0, 0.6*boxDrawWidth, speed);
+	moveLinear(0.4*boxDrawWidth, 0, speed);
+	moveLinear(0.4*boxDrawWidth, 1.4*boxDrawWidth, speed);
+	moveLinear(-(0.2*boxDrawWidth, 0, speed);
+	moveLinear(0, 0.4*boxDrawWidth, speed);
+	moveLinear(0.4*boxDrawWidth, 0, speed);
+	movelinear(1.2*boxDrawWidth, 4*boxDrawWidth, speed);
+	moveLinear(0, 0.6*boxDrawWidth, speed);
+	pressBottle(false);
+	moveLinear(0, -(0.6*boxDrawWidth), speed);
+	pressBottle(true);
+	movelinear(1.2*boxDrawWidth, -4*boxDrawWidth, speed);
+	moveLinear(0.4*boxDrawWidth, 0, speed);
+	moveLinear(0, -0.4*boxDrawWidth, speed);
+	moveLinear(-(0.2*boxDrawWidth, 0, speed);
+	moveLinear(0.4*boxDrawWidth, -1.4*boxDrawWidth, speed);
+	moveLinear(0.4*boxDrawWidth, 0, speed);
+	moveLinear(0, -0.6*boxDrawWidth, speed);
+	moveLinear(-(0.2*boxDrawWidth), 0, speed);
+	moveLinear(boxDrawWidth, -2*boxDrawWidth, speed);
+	moveLinear(-1.6*boxDrawWidth, 0, speed);
+	void moveEllipse (20+(3*boxDrawWidth), 20, 1.6*boxDrawWidth, 1.4*boxDrawWidth, 180, speed);
+	moveLinear(-1.6*boxDrawWidth, 0, speed);
 }
 
 /********************************************************
