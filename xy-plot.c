@@ -435,6 +435,36 @@ void drawEiffel(int heigth){
 	moveLinear(-1.6*boxDrawWidth, 0, speed);
 	void moveEllipse (20+(3*boxDrawWidth), 20, 1.6*boxDrawWidth, 1.4*boxDrawWidth, 180, speed);
 	moveLinear(-1.6*boxDrawWidth, 0, speed);
+	pressBottle(false);
+	moveLinear(boxDrawWidth, 2*boxDrawWidth, speed);
+	pressBottle(true);
+	moveLinear(4*boxDrawWidth, 0, speed);
+	pressBottle(false);
+	moveLinear(-0.2*boxDrawWidth, 0.6*boxDrawWidth, speed);
+	pressBottle(true);
+	moveLinear(-3.6*boxDrawWidth, 0, speed);
+	pressBottle(false);
+	moveLinear(boxDrawWidth, 0.2*boxDrawWidth, speed);
+	pressBottle(true);
+	moveLinear(1.6*boxDrawWidth, 0, speed);
+	moveLinear(-0.2*boxDrawWidth, boxDrawWidth, speed);
+	moveLinear(-1.2*boxDrawWidth, 0, speed);
+	moveLinear(-0.2*boxDrawWidth, -boxDrawWidth, speed);
+	pressBottle(false);
+	moveLinear(-0.6*boxDrawWidth, 1.2*boxDrawWidth, speed);
+	pressBottle(true);
+	moveLinear(2.8*boxDrawWidth, 0, speed);
+	pressBottle(false);
+	moveLinear(-0.2*boxDrawWidth, 0.4*boxDrawWidth, speed);
+	pressBottle(true);
+	moveLinear(-2.4*boxDrawWidth, 0,speed);
+	pressBottle(false);
+	moveLinear(0.8*boxDrawWidth, 0.2*boxDrawWidth, speed);
+	pressBottle(true);
+	moveLinear(0.8*boxDrawWidth, 0, speed);
+	moveLinear(-0.4*boxDrawWidth, 2*boxDrawWidth, speed);
+	moveLinear(-0.4*boxDrawWidth, -2*boxDrawWidth, speed);
+	pressBottle(false);
 }
 
 /********************************************************
