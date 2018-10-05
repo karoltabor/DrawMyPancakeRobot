@@ -415,7 +415,7 @@ void drawEiffel(int heigth){
 	moveLinear(0, 0.6*boxDrawWidth, speed);
 	moveLinear(0.4*boxDrawWidth, 0, speed);
 	moveLinear(0.4*boxDrawWidth, 1.4*boxDrawWidth, speed);
-	moveLinear(-(0.2*boxDrawWidth, 0, speed);
+	moveLinear(-(0.2*boxDrawWidth), 0, speed);
 	moveLinear(0, 0.4*boxDrawWidth, speed);
 	moveLinear(0.4*boxDrawWidth, 0, speed);
 	movelinear(1.2*boxDrawWidth, 4*boxDrawWidth, speed);
@@ -426,7 +426,7 @@ void drawEiffel(int heigth){
 	movelinear(1.2*boxDrawWidth, -4*boxDrawWidth, speed);
 	moveLinear(0.4*boxDrawWidth, 0, speed);
 	moveLinear(0, -0.4*boxDrawWidth, speed);
-	moveLinear(-(0.2*boxDrawWidth, 0, speed);
+	moveLinear(-(0.2*boxDrawWidth), 0, speed);
 	moveLinear(0.4*boxDrawWidth, -1.4*boxDrawWidth, speed);
 	moveLinear(0.4*boxDrawWidth, 0, speed);
 	moveLinear(0, -0.6*boxDrawWidth, speed);
