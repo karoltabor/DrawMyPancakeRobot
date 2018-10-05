@@ -14,44 +14,48 @@ task main()
 {
 	displayBigTextLine(0, "Started!");
 
-	char action[MAX_MSG_LENGTH];  // To contain the incoming message.
-	char payload[MAX_MSG_LENGTH];  // To contain the outgoing message
-
+	char action[MAX_MSG_LENGTH];
+	char *payload;
 
 	openMailboxIn("EV3_INBOX0");
 
-
 	while (true)
 	{
-		// Read input message.
 		readMailboxIn("EV3_INBOX0", action);
 		readMailboxIn("EV3_INBOX1", payload);
+
 		if (strcmp(action, "") != 0)
 		{
 			writeDebugStreamLine(action);
-			//incoming message handling.
 			eraseDisplay();
 			startTask(monitorPlotter);
 			wait1Msec(2000);
 			calibrate();
 
-			/*
+			/*******************************************
 			* read input to determine action
 			* strings in freeDraw are split in xy-plot
-			*/
+			********************************************/
 
 			if (strcmp(action, "Circle") == 0) {
 				moveEllipse(60, 100, 50, 50, 360, 20);
 				} else if (strcmp(action, "Heart") == 0) {
 				drawHeart(100);
 				} else if (strcmp(action, "Square") == 0) {
-				//drawSquare(30);
-				fillCircle(70, 20, 5, 20);
+				drawSquare(30);
 				} else if (strcmp(action, "Triangle") == 0) {
 				drawTriangle(30, 40);
-			} else if (strcmp(action, "Text") == 0) {
-				//
-			}else if (strcmp(action, "Draw") == 0) {
+				} else if (strcmp(action, "Star") == 0) {
+				drawStar(50, 40, 20);
+				}else if (strcmp(action, "Spiral") == 0) {
+				drawSpiral(50, 50, 50, 20);
+				}else if (strcmp(action, "Eifel") == 0) {
+				drawEiffel(50, 20);
+				}else if (strcmp(action, "Smiley") == 0) {
+				drawSmiley(50,50,50,20);
+			}else if (strcmp(action, "Text") == 0) {
+				writeText(payload, 20);
+				}else if (strcmp(action, "Draw") == 0) {
 				freeDraw(payload, 20);
 			}
 			wait1Msec(1000);

@@ -159,6 +159,7 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 
 /********************************************************
 *   Free draw functions
+* 	Removing null inputs
 ********************************************************/
 char* removeLeadingZeros(char *coord){
 	string coordString = coord;
@@ -175,6 +176,10 @@ char* removeLeadingZeros(char *coord){
 	coordString = coord;
 	return coordString;
 }
+
+/*****************************************
+*	Read inputstring variables
+******************************************/
 
 void freeDraw(char *input, int speed) {
 	int count = 0;
@@ -422,82 +427,6 @@ void drawEiffel(int heigth, int speed){
 	moveLinear(-0.4*boxDrawWidth, 2*boxDrawWidth, speed);
 	moveLinear(-0.4*boxDrawWidth, -2*boxDrawWidth, speed);
 	pressBottle(false);
-}
-
-/********************************************************
-*   Write the word "LEGO!"
-********************************************************/
-void WriteLEGO(){
-	moveLinear(10,10,20);
-	// Letter 'L'
-	moveLinear(10,0,20);
-	moveLinear(0,40,20);
-	moveLinear(30,0,20);
-	moveLinear(0,10,20);
-	moveLinear(-40,0,20);
-	moveLinear(0,-55,20);
-
-	moveLinear(60,0,20);
-
-	// Letter 'E'
-	moveLinear(40,0,20);
-	moveLinear(0,15,20);
-	moveLinear(-30,0,20);
-	moveLinear(0,10,20);
-	moveLinear(20,0,20);
-	moveLinear(0,10,20);
-	moveLinear(-20,0,20);
-	moveLinear(0,5,20);
-	moveLinear(30,0,20);
-	moveLinear(0,10,20);
-	moveLinear(-40,0,20);
-	moveLinear(0,-50,20);
-
-	moveLinear(60,0,20);
-
-	// Letter 'G'
-	moveLinear(40,0,20);
-	moveLinear(0,15,20);
-	moveLinear(-30,0,20);
-	moveLinear(0,30,20);
-	moveLinear(20,0,20);
-	moveLinear(0,-15,20);
-	moveLinear(-10,0,20);
-	moveLinear(0,-10,20);
-	moveLinear(20,0,20);
-	moveLinear(0,30,20);
-	moveLinear(-40,0,20);
-	moveLinear(0,-50,20);
-
-	moveLinear(60,0,20);
-
-	// Letter '0'
-	moveLinear(40,0,20);
-	moveLinear(0,50,20);
-	moveLinear(-40,0,20);
-	moveLinear(0,-55,20);
-	moveLinear(10,15,20);
-	moveLinear(20,0,20);
-	moveLinear(0,30,20);
-	moveLinear(-20,0,20);
-	moveLinear(0,-35,20);
-
-	moveLinear(60,0,20);
-
-	// Letter '!'
-	moveLinear(10,0,20);
-	moveLinear(0,30,20);
-	moveLinear(-10,0,20);
-	moveLinear(-30,0,20);
-	moveLinear(0,40,20);
-	moveLinear(10,0,20);
-	moveLinear(0,10,20);
-	moveLinear(-10,0,20);
-	moveLinear(0,10,20);
-
-	moveLinear(-60,100,20);
-
-	wait1Msec(10000);
 }
 
 /********************************************************
@@ -1173,15 +1102,14 @@ void makeFields(){
 	letterWidth = (letterBoxWidth-(2*margin))/3;
 }
 
-void writeText(string text, int speed) {
-	char *chars = text;
+void writeText(char *text, int speed) {
 	//add spaces to center text
 
 	makeFields();
 	moveLinear(margin, margin, 20);
 
 	for(int i = 0; i < strlen(text);i++){
-		switch(chars[i]){
+		switch(text[i]){
 		case 'a': drawA(speed);break;
 		case 'b': drawB(speed);break;
 		case 'c': drawC(speed);break;
