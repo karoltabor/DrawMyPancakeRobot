@@ -405,8 +405,8 @@ void drawSpiral(int xCenter, int yCenter, float radius, int speed){
 *		Draw Eiffel Tower
 ********************************************************/
 
-void drawEiffel(int heigth){
-	int boxDrawWidth = height/9;
+void drawEiffel(int heigth, int speed){
+	int boxDrawWidth = heigth/9;
 	pressBottle(false);
 	moveLinear(20, 20, speed);
 	pressBottle(true);
@@ -418,12 +418,12 @@ void drawEiffel(int heigth){
 	moveLinear(-(0.2*boxDrawWidth), 0, speed);
 	moveLinear(0, 0.4*boxDrawWidth, speed);
 	moveLinear(0.4*boxDrawWidth, 0, speed);
-	movelinear(1.2*boxDrawWidth, 4*boxDrawWidth, speed);
+	moveLinear(1.2*boxDrawWidth, 4*boxDrawWidth, speed);
 	moveLinear(0, 0.6*boxDrawWidth, speed);
 	pressBottle(false);
 	moveLinear(0, -(0.6*boxDrawWidth), speed);
 	pressBottle(true);
-	movelinear(1.2*boxDrawWidth, -4*boxDrawWidth, speed);
+	moveLinear(1.2*boxDrawWidth, -4*boxDrawWidth, speed);
 	moveLinear(0.4*boxDrawWidth, 0, speed);
 	moveLinear(0, -0.4*boxDrawWidth, speed);
 	moveLinear(-(0.2*boxDrawWidth), 0, speed);
@@ -433,7 +433,7 @@ void drawEiffel(int heigth){
 	moveLinear(-(0.2*boxDrawWidth), 0, speed);
 	moveLinear(boxDrawWidth, -2*boxDrawWidth, speed);
 	moveLinear(-1.6*boxDrawWidth, 0, speed);
-	void moveEllipse (20+(3*boxDrawWidth), 20, 1.6*boxDrawWidth, 1.4*boxDrawWidth, 180, speed);
+	moveEllipse(20+(3*boxDrawWidth), 20, 1.6*boxDrawWidth, 1.4*boxDrawWidth, 180, speed);
 	moveLinear(-1.6*boxDrawWidth, 0, speed);
 	pressBottle(false);
 	moveLinear(boxDrawWidth, 2*boxDrawWidth, speed);
@@ -587,11 +587,11 @@ void drawA(int speed){
     pressBottle(false);
     moveLinear(margin, margin, speed);
     pressBottle(true);
-    moveLinear(letterWidth, letterBoxHeight-(2margin), speed);
+    moveLinear(letterWidth, letterBoxHeight-(2*margin), speed);
     moveLinear(letterWidth, 0, speed);
-    moveLinear(letterWidth, -(letterBoxHeight-(2margin)), speed);
+    moveLinear(letterWidth, -(letterBoxHeight-(2*margin)), speed);
     pressBottle(false);
-    movelinear(-(0.5 * letterWidth), 0.5 * (letterBoxHeight-(2margin)), speed);
+    moveLinear(-(0.5 * letterWidth), 0.5 * (letterBoxHeight-(2*margin)), speed);
     pressBottle(true);
     moveLinear(-2 * letterWidth, 0, speed);
     pressBottle(false);
@@ -652,7 +652,7 @@ void drawD(int speed){
     moveLinear(2 * letterWidth, 0, speed);
     moveLinear(0, 4 * letterWidth, speed);
     moveLinear(-(2 * letterWidth), 0, speed);
-    pressBottle(false)
+    pressBottle(false);
 }
 
 /********************************************************
@@ -703,12 +703,12 @@ void drawG(int speed){
     moveLinear(letterWidth, 0, speed);
     moveLinear(letterWidth, -letterWidth, speed);
     moveLinear(0, -(2 * letterWidth), speed);
-    movelinear(-letterWidth, -letterWidth, speed);
+    moveLinear(-letterWidth, -letterWidth, speed);
     moveLinear(-letterWidth, 0, speed);
     moveLinear(-letterWidth, letterWidth, speed);
     moveLinear(0, letterWidth, speed);
     moveLinear(letterWidth, 0, speed);
-    pressBottle(false)
+    pressBottle(false);
 }
 
 /********************************************************
@@ -744,7 +744,7 @@ void drawI(int speed){
     moveLinear(0, 0.5 * letterWidth, speed);
     pressBottle(true);
     moveLinear(0, 0.75 * letterWidth, speed);
-    presBottle(false);
+    pressBottle(false);
 }
 
 /********************************************************
