@@ -184,15 +184,16 @@ char* removeLeadingZeros(char *coord){
 void freeDraw(char *input, int speed) {
 	int count = 0;
 
+	string xCoor = "0";
+	string yCoor = "0";
 	//for each instuction of 9 characters
 	while(count < (strlen(input)/9)){
-		string instruction;
+		string instruction, bottlePressed;
 		strcpy(instruction, input);
 		stringDelete(instruction, 0, count*9);
 		stringDelete(instruction, 9, strlen(instruction)-9);
 
 		//split instruction into x-coordinate, y-coordinate and a boolean for the bottle press function
-		string xCoor, yCoor, bottlePressed;
 		strcpy(xCoor, instruction);
 		stringDelete(xCoor, 4 , 5);
 		strcpy(yCoor, instruction);
@@ -203,6 +204,9 @@ void freeDraw(char *input, int speed) {
 
 		char *xCoorArr = xCoor;
 		char *yCoorArr = yCoor;
+
+		int xDistance = (atoi(xCoor) - atoi(removeLeadingZeros(xCoorArr)));
+		int yDistance = (atoi(yCoor) - atoi(removeLeadingZeros(yCoorArr)));
 
 		xCoor = removeLeadingZeros(xCoorArr);
 		yCoor = removeLeadingZeros(yCoorArr);
@@ -215,8 +219,8 @@ void freeDraw(char *input, int speed) {
 		}
 
 		//execute instruction
-		//pressBottle(bottle);
-		//moveLinear(xCoor, yCoor, 20);
+		pressBottle(bottle);
+		moveLinear(xDistance, yDistance, speed);
 		writeDebugStreamLine("xCoor: %s", xCoor);
 		writeDebugStreamLine("yCoor: %s", yCoor);
 		writeDebugStreamLine("bottlePressed: %d", bottle);
