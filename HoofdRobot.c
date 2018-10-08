@@ -26,6 +26,7 @@ task main()
 
 		if (strcmp(action, "") != 0)
 		{
+			playSoundFile("Download");
 			writeDebugStreamLine(action);
 			eraseDisplay();
 			startTask(monitorPlotter);
@@ -59,6 +60,7 @@ task main()
 				freeDraw(payload, 20);
 			}
 			wait1Msec(1000);
+			playSoundFile("Thank you");
 			calibrate();
 		}
 		else

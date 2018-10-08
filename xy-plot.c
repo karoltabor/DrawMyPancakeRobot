@@ -69,6 +69,9 @@ void pressBottle(bool enabled)
 {
 	if(enabled  == true){
 		setMotor(pumpMotor, 50);
+	} else {
+		playSoundFile("Air release");
+		setMotor(pumpMotor, 0);
 	}
 }
 
@@ -107,6 +110,9 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 
 		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-unprecision) && (getMotorEncoder(yMotor) < yDesinationEncoder+unprecision)) ||
 			!((getMotorEncoder(xMotor) > xDesinationEncoder-unprecision) && (getMotorEncoder(xMotor) < xDesinationEncoder+unprecision))){
+
+			playSoundFile("Laser");
+
 			if(yDesinationEncoder > (getMotorEncoder(yMotor)-unprecision)){
 				setMotor(yMotor,-ySpeed);
 			}
