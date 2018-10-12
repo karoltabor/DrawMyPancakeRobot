@@ -16,6 +16,7 @@ void openMailboxIn(char *name)
 	if (index >=0 && index < 10)
 	{
 		openMailbox(index, internal_name);
+		writeDebugStreamLine("Opened mailbox %d", index);
 	}
 }
 
@@ -25,6 +26,14 @@ void openMailboxIn(char *name)
 // Return value: void.
 void closeMailboxIn(char *name)
 {
+	int index;
+	char internal_name[MAX_MAILBOXNAME_LENGTH];
+	sscanf(name, "EV3_INBOX%d", &index);
+	sscanf(name, "EV3_INBOX%s", internal_name);
+	if (index >=0 && index < 10)
+	{
+		closeMailbox(index);
+	}
 }
 
 
@@ -44,6 +53,7 @@ void readMailboxIn(char *name, char *msg)
 		if (size > 0)
 		{
 			readMailbox(index, msg, MAX_MSG_LENGTH);
+			writeDebugStreamLine("Read mailbox %d: %s", index, msg);
 		}
 	}
 }

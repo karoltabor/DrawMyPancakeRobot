@@ -65,13 +65,20 @@ void calibrate() {
 /********************************************************
 *  Press Bottle
 ********************************************************/
-void pressBottle(bool enabled)
+task Pump()
 {
-	if(enabled  == true){
+	while(true) {
 		setMotor(pumpMotor, 50);
+	}
+	setMotor(pumpMotor, 0);
+}
+
+void pressBottle(bool press) {
+	if(press){
+		startTask(Pump);
 	} else {
+		stopTask(Pump);
 		playSoundFile("Air release");
-		setMotor(pumpMotor, 0);
 	}
 }
 
@@ -111,7 +118,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-unprecision) && (getMotorEncoder(yMotor) < yDesinationEncoder+unprecision)) ||
 			!((getMotorEncoder(xMotor) > xDesinationEncoder-unprecision) && (getMotorEncoder(xMotor) < xDesinationEncoder+unprecision))){
 
-			playSoundFile("Laser");
+			//playSoundFile("Laser");
 
 			if(yDesinationEncoder > (getMotorEncoder(yMotor)-unprecision)){
 				setMotor(yMotor,-ySpeed);
@@ -124,13 +131,16 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 			}
 
 			if(xDesinationEncoder > (getMotorEncoder(xMotor)-unprecision)){
-				setMotorSync(xMotor,xMotor2,0,xSpeed);
+				setMotor(xMotor,xSpeed);
+				setMotor(xMotor2,xSpeed);
 			}
 			else if(xDesinationEncoder < (getMotorEncoder(xMotor)+unprecision)){
-				setMotorSync(xMotor,xMotor2,0,-xSpeed);
+				setMotor(xMotor,-xSpeed);
+				setMotor(xMotor2,-xSpeed);
 			}
 			else{
-				setMotorSync(xMotor,xMotor2,0,0);
+				setMotor(xMotor,0);
+				setMotor(xMotor2,0);
 				xDestination = 1;
 			}
 		}
@@ -211,24 +221,34 @@ void freeDraw(char *input, int speed) {
 		char *xCoorArr = xCoor;
 		char *yCoorArr = yCoor;
 
-		int xDistance = (atoi(xCoor) - atoi(removeLeadingZeros(xCoorArr)));
-		int yDistance = (atoi(yCoor) - atoi(removeLeadingZeros(yCoorArr)));
+		int previousXCoor, previousYCoor;
+		sscanf(xCoor, "%d", &previousXCoor);
+		sscanf(yCoor, "%d", &previousYCoor);
 
+		int xCoorInt, yCoorInt;
 		xCoor = removeLeadingZeros(xCoorArr);
 		yCoor = removeLeadingZeros(yCoorArr);
+		sscanf(xCoor, "%d", &xCoorInt);
+		sscanf(yCoor, "%d", &yCoorInt);
+
+		int xDistance = xCoorInt-previousXCoor;
+		int yDistance = yCoorInt-previousYCoor;
 
 		bool bottle;
 		if(bottlePressed == "T"){
-			bottle = true;
+			pressBottle(true);
 			} else {
-			bottle = false;
+			pressBottle(false);
 		}
 
 		//execute instruction
-		pressBottle(bottle);
 		moveLinear(xDistance, yDistance, speed);
-		writeDebugStreamLine("xCoor: %s", xCoor);
-		writeDebugStreamLine("yCoor: %s", yCoor);
+		writeDebugStreamLine("xCoor: %s", previousXCoor);
+		writeDebugStreamLine("yCoor: %s", previousYCoor);
+		writeDebugStreamLine("prev xCoor: %s", xCoor);
+		writeDebugStreamLine("prev yCoor: %s", yCoor);
+		writeDebugStreamLine("xDistance: %d", xDistance);
+		writeDebugStreamLine("yDistance: %d", yDistance);
 		writeDebugStreamLine("bottlePressed: %d", bottle);
 
 		count++;
@@ -273,11 +293,13 @@ void moveEllipse (int xCenter, int yCenter, int xradius, int yradius, int finala
 *   Draw Square
 ********************************************************/
 void drawSquare(int speed){
+	pressBottle(true);
 	moveLinear(20,20,speed);
 	moveLinear(150,0,speed);
 	moveLinear(0,120,speed);
 	moveLinear(-150,0,speed);
 	moveLinear(0,-120,speed);
+	pressBottle(false);
 }
 
 /********************************************************
@@ -1120,45 +1142,45 @@ void writeText(char *text, int speed) {
 
 	for(int i = 0; i < strlen(text);i++){
 		switch(text[i]){
-		case 'a': drawA(speed);break;
-		case 'b': drawB(speed);break;
-		case 'c': drawC(speed);break;
-		case 'd': drawD(speed);break;
-		case 'e': drawE(speed);break;
-		case 'f': drawF(speed);break;
-		case 'g': drawG(speed);break;
-		case 'h': drawH(speed);break;
-		case 'i': drawI(speed);break;
-		case 'j': drawJ(speed);break;
-		case 'k': drawK(speed);break;
-		case 'l': drawL(speed);break;
-		case 'm': drawM(speed);break;
-		case 'n': drawN(speed);break;
-		case 'o': drawO(speed);break;
-		case 'p': drawP(speed);break;
-		case 'q': drawQ(speed);break;
-		case 'r': drawR(speed);break;
-		case 's': drawS(speed);break;
-		case 't': drawT(speed);break;
-		case 'u': drawU(speed);break;
-		case 'v': drawV(speed);break;
-		case 'w': drawW(speed);break;
-		case 'x': drawX(speed);break;
-		case 'y': drawY(speed);break;
-		case 'z': drawZ(speed);break;
+			case 'a': drawA(speed);break;
+			case 'b': drawB(speed);break;
+			case 'c': drawC(speed);break;
+			case 'd': drawD(speed);break;
+			case 'e': drawE(speed);break;
+			case 'f': drawF(speed);break;
+			case 'g': drawG(speed);break;
+			case 'h': drawH(speed);break;
+			case 'i': drawI(speed);break;
+			case 'j': drawJ(speed);break;
+			case 'k': drawK(speed);break;
+			case 'l': drawL(speed);break;
+			case 'm': drawM(speed);break;
+			case 'n': drawN(speed);break;
+			case 'o': drawO(speed);break;
+			case 'p': drawP(speed);break;
+			case 'q': drawQ(speed);break;
+			case 'r': drawR(speed);break;
+			case 's': drawS(speed);break;
+			case 't': drawT(speed);break;
+			case 'u': drawU(speed);break;
+			case 'v': drawV(speed);break;
+			case 'w': drawW(speed);break;
+			case 'x': drawX(speed);break;
+			case 'y': drawY(speed);break;
+			case 'z': drawZ(speed);break;
 
-		case '0': drawO(speed);break;
-		case '1': draw1(speed);break;
-		case '2': draw2(speed);break;
-		case '3': draw3(speed);break;
-		case '4': draw4(speed);break;
-		case '5': draw5(speed);break;
-		case '6': draw6(speed);break;
-		case '7': draw7(speed);break;
-		case '8': draw8(speed);break;
-		case '9': draw9(speed);break;
+			case '0': drawO(speed);break;
+			case '1': draw1(speed);break;
+			case '2': draw2(speed);break;
+			case '3': draw3(speed);break;
+			case '4': draw4(speed);break;
+			case '5': draw5(speed);break;
+			case '6': draw6(speed);break;
+			case '7': draw7(speed);break;
+			case '8': draw8(speed);break;
+			case '9': draw9(speed);break;
 
-		default: break;
+			default: break;
 
 		}
 		moveLinear(letterBoxWidth, 0 , speed);
