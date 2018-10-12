@@ -79,6 +79,7 @@ void pressBottle(bool press) {
 	} else {
 		stopTask(Pump);
 		playSoundFile("Air release");
+		delay(500);
 	}
 }
 

@@ -55,8 +55,8 @@ task main()
 				drawStar(50, 40, 20);
 			} else if (strcmp(action, "Spiral") == 0) {
 				drawSpiral(50, 50, 50, 20);
-			} else if (strcmp(action, "Eifel") == 0) {
-				drawEiffel(50, 20);
+			} else if (strcmp(action, "Eiffel") == 0) {
+				drawEiffel(150, 20);
 			} else if (strcmp(action, "Smiley") == 0) {
 				drawSmiley(50,50,50,20);
 			} else if (strcmp(action, "Text") == 0) {
