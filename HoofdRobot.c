@@ -64,7 +64,20 @@ task main()
 			} else if (strcmp(action, "FreeDraw") == 0) {
 				freeDraw(payload, 20);
 			}
-			wait1Msec(1000);
+
+			//wait a few seconds to give the drawing time to get some color
+			wait1Msec(1000); //TODO: change the amount of seconds to wait
+
+			//fill the pancake
+			if(strcmp(action, "Text") == 0){
+				//fillRectangle();
+			} else {
+				fillCircle(100, 20, 5, 20);
+			}
+
+			//wait a few seconds to bake the pancake
+			wait1Msec(1000); //TODO: change the amount of seconds to wait
+
 			playSoundFile("Thank you");
 			calibrate();
 		}
