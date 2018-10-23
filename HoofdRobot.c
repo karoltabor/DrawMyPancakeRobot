@@ -25,7 +25,7 @@ task main()
 		readMailboxIn("EV3_INBOX0", action);
 		readMailboxIn("EV3_INBOX1", payload);
 
-		//wait untill messages are received
+		//wait untill payload is received
 		while( (strcmp(action, "Text") == 0 || strcmp(action, "FreeDraw") == 0) && !(strlen(payload) > 0)){
 			readMailboxIn("EV3_INBOX1", payload);
 		}
@@ -62,7 +62,10 @@ task main()
 			} else if (strcmp(action, "Text") == 0) {
 				writeText(payload, 20);
 			} else if (strcmp(action, "FreeDraw") == 0) {
-				freeDraw(payload, 20);
+				//iterate through instructions
+				while (strcmp(payload, "") != 0) {
+					freeDraw(payload, 20);
+				}
 			}
 
 			//wait a few seconds to give the drawing time to get some color
@@ -70,7 +73,7 @@ task main()
 
 			//fill the pancake
 			if(strcmp(action, "Text") == 0){
-				//fillRectangle();
+				fillRectangle(150, 75, 20);
 			} else {
 				fillCircle(100, 20, 5, 20);
 			}

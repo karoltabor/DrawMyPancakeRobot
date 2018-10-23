@@ -149,6 +149,31 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 	}
 }
 
+/********************************************************
+*   Fill Rectangle
+********************************************************/
+void fillRectangle(int width, int height, int margin, int steps, int speed) {
+	bool left = false;
+
+	pressBottle(false);
+	moveLinear(margin, margin, speed);
+
+	int currentHeight = 0;
+	pressBottle(true);
+	for(int i=0; i<height; i+=steps) {
+		pressBottle(true);
+		if(left){
+			moveLinear(width, 0, speed);
+			left = false;
+		} else {
+			moveLinear(-width, 0, speed);
+			left = true;
+		}
+		pressBottle(false);
+		moveLinear(0, steps, speed);
+	}
+	pressBottle(false);
+}
 
 /********************************************************
 *   Fill circle
