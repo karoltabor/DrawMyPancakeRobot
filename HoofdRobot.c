@@ -73,7 +73,7 @@ task main()
 
 			//fill the pancake
 			if(strcmp(action, "Text") == 0){
-				fillRectangle(150, 75, 20);
+				fillRectangle(150, 75, 20, 5, 20);
 			} else {
 				fillCircle(100, 20, 5, 20);
 			}
