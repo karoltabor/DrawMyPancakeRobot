@@ -6,13 +6,13 @@ task monitorPlotter();
 bool penPosition = false;
 int xPosition, xDestination;
 int yPosition, yDestination;
-int gridWidth = 1000;
-int gridHeight = 700;
+int gridWidth = 850;
+int gridHeight = 470;
 int factor = 5;
 int unprecision = 5;
-int margin = 20;
+int margin = 10;
 int letterBoxWidth;
-int letterBoxHeight;
+int letterBoxHeight = 75;
 int letterWidth; // Extra for double letters
 
 
@@ -76,7 +76,7 @@ task Pump()
 void pressBottle(bool press) {
 	if(press){
 		startTask(Pump);
-	} else {
+		} else {
 		stopTask(Pump);
 		playSoundFile("Air release");
 		delay(500);
@@ -111,7 +111,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 
 	if(xPosition <= gridWidth && yPosition <= gridHeight){
 		xDestination = factor*amountToMoveX; // xDestination = 5x Current xPosition;
-		yDestination = -factor*amountToMoveY; // yDestination = 5x Current yPosition;
+		yDestination = factor*amountToMoveY; // yDestination = 5x Current yPosition;
 
 		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
 		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination);
@@ -122,10 +122,10 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 			//playSoundFile("Laser");
 
 			if(yDesinationEncoder > (getMotorEncoder(yMotor)-unprecision)){
-				setMotor(yMotor,-ySpeed);
+				setMotor(yMotor,ySpeed);
 			}
 			else if(yDesinationEncoder < (getMotorEncoder(yMotor)+unprecision)){
-				setMotor(yMotor,ySpeed);
+				setMotor(yMotor,-ySpeed);
 			}
 			else {
 				yDestination = 1;
@@ -152,16 +152,16 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 /********************************************************
 *   Fill Rectangle
 ********************************************************/
-void fillRectangle(int width, int height, int margin, int steps, int speed) {
-	bool left = false;
+void fillRectangle(int width, int height, int steps, int speed) {
+	bool left = true;
 
 	pressBottle(false);
-	moveLinear(margin, margin, speed);
+	moveLinear((gridWidth/10)-(width/2), 0, speed);
+	moveLinear(0, (gridHeight/10)-(height/2), speed);
 
 	int currentHeight = 0;
 	pressBottle(true);
 	for(int i=0; i<height; i+=steps) {
-		pressBottle(true);
 		if(left){
 			moveLinear(width, 0, speed);
 			left = false;
@@ -169,7 +169,6 @@ void fillRectangle(int width, int height, int margin, int steps, int speed) {
 			moveLinear(-width, 0, speed);
 			left = true;
 		}
-		pressBottle(false);
 		moveLinear(0, steps, speed);
 	}
 	pressBottle(false);
@@ -185,15 +184,23 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 	moveLinear(diameter / 2 + margin, margin, speed);
 
 	pressBottle(true);
-	for (int i = 0; i < diameter; i += 5) {
+	int i = 0;
+	bool bottom = true;
+	while (((i < (diameter/2 )) && bottom) || ( i > 0 && !bottom)) {
 		if (left) {
-			moveLinear(i * 2, 0, speed);
+			moveLinear(i, 0, speed);
 			moveLinear(steps, steps, speed);
 			left = false;
 			} else {
-			moveLinear(-i * 2, 0, speed);
+			moveLinear(-i, 0, speed);
 			moveLinear(-steps, steps, speed);
 			left = true;
+		}
+		if(i>(diameter/2)){
+			i -= steps;
+			bottom = false;
+		} else {
+			i += steps;
 		}
 	}
 	pressBottle(false);
@@ -351,13 +358,14 @@ void moveEllipse2 (int xCenter, int yCenter, int xradius, int yradius, int final
 /********************************************************
 *   Draw Square
 ********************************************************/
-void drawSquare(int speed){
+void drawSquare(int width, int height, int speed){
+	moveLinear((gridWidth/10)-(width/2), 0, speed);
+	moveLinear(0, (gridHeight/10)-(height/2), speed);
 	pressBottle(true);
-	moveLinear(20,20,speed);
-	moveLinear(150,0,speed);
-	moveLinear(0,120,speed);
-	moveLinear(-150,0,speed);
-	moveLinear(0,-120,speed);
+	moveLinear(width,0,speed);
+	moveLinear(0,height,speed);
+	moveLinear(-width,0,speed);
+	moveLinear(0,-height,speed);
 	pressBottle(false);
 }
 
@@ -1293,61 +1301,60 @@ void draw9(int speed){
 *   Vakken letters
 ********************************************************/
 
-void makeFields(){
-	letterBoxHeight = gridHeight - margin*2;
-	letterBoxWidth = gridWidth/6 - margin*2;
-	letterWidth = (letterBoxWidth-(2*margin))/3;
-}
-
-void writeText(char *text, int speed) {
+void writeText(char *text, int width, int height, int speed) {
 	//add spaces to center text
 
-	makeFields();
-	moveLinear(margin, margin, 20);
+	letterBoxWidth = ((gridWidth/5)-(margin*2))/6;
+	letterWidth = letterBoxWidth/3;
+
+	moveLinear((gridWidth/10)-(width/2), 0, speed);
+	moveLinear(0, (gridHeight/10)-(height/2), speed);
+
+	moveLinear(margin, margin, 5);
 
 	for(int i = 0; i < strlen(text);i++){
 		switch(text[i]){
-			case 'a': drawA(speed);break;
-			case 'b': drawB(speed);break;
-			case 'c': drawC(speed);break;
-			case 'd': drawD(speed);break;
-			case 'e': drawE(speed);break;
-			case 'f': drawF(speed);break;
-			case 'g': drawG(speed);break;
-			case 'h': drawH(speed);break;
-			case 'i': drawI(speed);break;
-			case 'j': drawJ(speed);break;
-			case 'k': drawK(speed);break;
-			case 'l': drawL(speed);break;
-			case 'm': drawM(speed);break;
-			case 'n': drawN(speed);break;
-			case 'o': drawO(speed);break;
-			case 'p': drawP(speed);break;
-			case 'q': drawQ(speed);break;
-			case 'r': drawR(speed);break;
-			case 's': drawS(speed);break;
-			case 't': drawT(speed);break;
-			case 'u': drawU(speed);break;
-			case 'v': drawV(speed);break;
-			case 'w': drawW(speed);break;
-			case 'x': drawX(speed);break;
-			case 'y': drawY(speed);break;
-			case 'z': drawZ(speed);break;
+		case 'a': drawA(speed);break;
+		case 'b': drawB(speed);break;
+		case 'c': drawC(speed);break;
+		case 'd': drawD(speed);break;
+		case 'e': drawE(speed);break;
+		case 'f': drawF(speed);break;
+		case 'g': drawG(speed);break;
+		case 'h': drawH(speed);break;
+		case 'i': drawI(speed);break;
+		case 'j': drawJ(speed);break;
+		case 'k': drawK(speed);break;
+		case 'l': drawL(speed);break;
+		case 'm': drawM(speed);break;
+		case 'n': drawN(speed);break;
+		case 'o': drawO(speed);break;
+		case 'p': drawP(speed);break;
+		case 'q': drawQ(speed);break;
+		case 'r': drawR(speed);break;
+		case 's': drawS(speed);break;
+		case 't': drawT(speed);break;
+		case 'u': drawU(speed);break;
+		case 'v': drawV(speed);break;
+		case 'w': drawW(speed);break;
+		case 'x': drawX(speed);break;
+		case 'y': drawY(speed);break;
+		case 'z': drawZ(speed);break;
 
-			case '0': drawO(speed);break;
-			case '1': draw1(speed);break;
-			case '2': draw2(speed);break;
-			case '3': draw3(speed);break;
-			case '4': draw4(speed);break;
-			case '5': draw5(speed);break;
-			case '6': draw6(speed);break;
-			case '7': draw7(speed);break;
-			case '8': draw8(speed);break;
-			case '9': draw9(speed);break;
+		case '0': drawO(speed);break;
+		case '1': draw1(speed);break;
+		case '2': draw2(speed);break;
+		case '3': draw3(speed);break;
+		case '4': draw4(speed);break;
+		case '5': draw5(speed);break;
+		case '6': draw6(speed);break;
+		case '7': draw7(speed);break;
+		case '8': draw8(speed);break;
+		case '9': draw9(speed);break;
 
-			default: break;
+		default: break;
 
 		}
-		moveLinear(letterBoxWidth, 0 , speed);
+		moveLinear(letterBoxWidth , 0 , speed);
 	}
 }

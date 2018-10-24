@@ -1,5 +1,5 @@
 #define MAX_MAILBOXNAME_LENGTH 20
-#define MAX_MSG_LENGTH 32
+#define MAX_MSG_LENGTH 20
 
 
 // Function: Open input mailbox.
