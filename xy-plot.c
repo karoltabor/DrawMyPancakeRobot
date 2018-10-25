@@ -39,19 +39,25 @@ void calibrate() {
 		if(getTouchValue(xHome) == false) {
 			setMotor(xMotor,-20);
 			} else {
-			setMotor(xMotor,0);
+			if(getMotorSpeed(xMotor) > 0){
+				setMotor(xMotor,0);
+			}
 		}
 
 		if(getTouchValue(xHome2) == false) {
 			setMotor(xMotor2,-20);
 			} else {
-			setMotor(xMotor2,0);
+			if(getMotorSpeed(xMotor2) > 0){
+				setMotor(xMotor2,0);
+			}
 		}
 
 		if(getTouchValue(yHome) == false) {
 			setMotor(yMotor,-20);
 			} else {
-			setMotor(yMotor,0);
+			if(getMotorSpeed(yMotor) > 0){
+				setMotor(yMotor,0);
+			}
 		}
 	}
 	stopAllMotors();
@@ -128,6 +134,9 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 				setMotor(yMotor,-ySpeed);
 			}
 			else {
+				if(getMotorSpeed(yMotor) > 0){
+					setMotor(yMotor,0);
+				}
 				yDestination = 1;
 			}
 
@@ -140,8 +149,12 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 				setMotor(xMotor2,-xSpeed);
 			}
 			else{
-				setMotor(xMotor,0);
-				setMotor(xMotor2,0);
+				if(getMotorSpeed(xMotor) > 0){
+					setMotor(xMotor,0);
+				}
+				if(getMotorSpeed(xMotor2) > 0){
+					setMotor(xMotor2,0);
+				}
 				xDestination = 1;
 			}
 		}
