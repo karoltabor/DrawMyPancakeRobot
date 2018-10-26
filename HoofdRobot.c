@@ -52,7 +52,7 @@ task main()
 			* strings in freeDraw are split in xy-plot *
 			********************************************/
 			if (strcmp(action, "Circle") == 0) {
-				moveEllipse(60, 100, 50, 50, 360, 20);
+				moveEllipse((gridWidth/10-margin), (gridHeight/10-margin), 50, 50, 360, 20);
 			} else if (strcmp(action, "Heart") == 0) {
 				drawHeart(100);
 			} else if (strcmp(action, "Square") == 0) {

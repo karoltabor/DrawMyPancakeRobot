@@ -9,7 +9,7 @@ int yPosition, yDestination;
 int gridWidth = 850;
 int gridHeight = 470;
 int factor = 5;
-int unprecision = 5;
+int unprecision = 10;
 int margin = 10;
 int letterBoxWidth;
 int letterBoxHeight = 75;
@@ -39,19 +39,25 @@ void calibrate() {
 		if(getTouchValue(xHome) == false) {
 			setMotor(xMotor,-20);
 			} else {
-			setMotor(xMotor,0);
+			if(getMotorSpeed(xMotor) > 0){
+				setMotor(xMotor,0);
+			}
 		}
 
 		if(getTouchValue(xHome2) == false) {
 			setMotor(xMotor2,-20);
 			} else {
-			setMotor(xMotor2,0);
+			if(getMotorSpeed(xMotor2) > 0){
+				setMotor(xMotor2,0);
+			}
 		}
 
 		if(getTouchValue(yHome) == false) {
 			setMotor(yMotor,-20);
 			} else {
-			setMotor(yMotor,0);
+			if(getMotorSpeed(yMotor) > 0){
+				setMotor(yMotor,0);
+			}
 		}
 	}
 	stopAllMotors();
@@ -113,7 +119,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 		xDestination = factor*amountToMoveX; // xDestination = 5x Current xPosition;
 		yDestination = factor*amountToMoveY; // yDestination = 5x Current yPosition;
 
-		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
+		const int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
 		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination);
 
 		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-unprecision) && (getMotorEncoder(yMotor) < yDesinationEncoder+unprecision)) ||
@@ -122,26 +128,45 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 			//playSoundFile("Laser");
 
 			if(yDesinationEncoder > (getMotorEncoder(yMotor)-unprecision)){
-				setMotor(yMotor,ySpeed);
+				if(getMotorSpeed(yMotor) < ySpeed) {
+					setMotor(yMotor,ySpeed);
+				}
 			}
 			else if(yDesinationEncoder < (getMotorEncoder(yMotor)+unprecision)){
-				setMotor(yMotor,-ySpeed);
+				if(getMotorSpeed(yMotor) > -ySpeed) {
+					setMotor(yMotor, -ySpeed);
+				}
 			}
 			else {
+				if(getMotorSpeed(yMotor) > 0){
+					setMotor(yMotor,0);
+				}
 				yDestination = 1;
 			}
 
 			if(xDesinationEncoder > (getMotorEncoder(xMotor)-unprecision)){
-				setMotor(xMotor,xSpeed);
-				setMotor(xMotor2,xSpeed);
+				if(getMotorSpeed(xMotor) < xSpeed) {
+					setMotor(xMotor, xSpeed);
+				}
+				if(getMotorSpeed(xMotor2) < xSpeed) {
+					setMotor(xMotor2, xSpeed);
+				}
 			}
 			else if(xDesinationEncoder < (getMotorEncoder(xMotor)+unprecision)){
-				setMotor(xMotor,-xSpeed);
-				setMotor(xMotor2,-xSpeed);
+				if(getMotorSpeed(xMotor) > -xSpeed) {
+					setMotor(xMotor, -xSpeed);
+				}
+				if(getMotorSpeed(xMotor2) > -xSpeed) {
+					setMotor(xMotor2, -xSpeed);
+				}
 			}
 			else{
-				setMotor(xMotor,0);
-				setMotor(xMotor2,0);
+				if(getMotorSpeed(xMotor) > 0){
+					setMotor(xMotor,0);
+				}
+				if(getMotorSpeed(xMotor2) > 0){
+					setMotor(xMotor2,0);
+				}
 				xDestination = 1;
 			}
 		}
@@ -165,7 +190,7 @@ void fillRectangle(int width, int height, int steps, int speed) {
 		if(left){
 			moveLinear(width, 0, speed);
 			left = false;
-		} else {
+			} else {
 			moveLinear(-width, 0, speed);
 			left = true;
 		}
@@ -199,7 +224,7 @@ void fillCircle(int diameter, int margin, int steps, int speed) {
 		if(i>(diameter/2)){
 			i -= steps;
 			bottom = false;
-		} else {
+			} else {
 			i += steps;
 		}
 	}
