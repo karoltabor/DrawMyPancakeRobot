@@ -12,6 +12,8 @@
 
 task main()
 {
+	const int bakeTime = 30000;
+
 	displayBigTextLine(0, "Started!");
 
 	char action[MAX_MSG_LENGTH];
@@ -19,6 +21,10 @@ task main()
 
 	openMailboxIn("EV3_INBOX0");
 	openMailboxIn("EV3_INBOX1");
+
+	setMotorBrakeMode(xMotor, motorBrake);
+	setMotorBrakeMode(xMotor2, motorBrake);
+	setMotorBrakeMode(yMotor, motorBrake);
 
 	while (true)
 	{
@@ -44,15 +50,23 @@ task main()
 			********************************************/
 			delay(2000);
 			pressBottle(true);
-			delay(15000);
+			//delay(15000);
 			pressBottle(false);
+
+			int fillFigure = 0;
+			/***
+			* 0: square
+			* 1: rectangle
+			* 2: circle
+			***/
 
 			/*******************************************
 			* read input to determine action					 *
 			* strings in freeDraw are split in xy-plot *
 			********************************************/
 			if (strcmp(action, "Circle") == 0) {
-				moveEllipse((gridWidth/10-margin), (gridHeight/10-margin), 50, 50, 360, 20);
+				drawCircular((gridWidth/10-margin), (gridHeight/10-margin), 30, 360, 20);
+				fillFigure = 2;
 			} else if (strcmp(action, "Heart") == 0) {
 				drawHeart(100);
 			} else if (strcmp(action, "Square") == 0) {
@@ -69,6 +83,7 @@ task main()
 				drawSmiley(50,50,50,20);
 			} else if (strcmp(action, "Text") == 0) {
 				writeText(payload, 150, 75, 20);
+				fillFigure = 1;
 			} else if (strcmp(action, "FreeDraw") == 0) {
 				//iterate through instructions
 				while (strcmp(payload, "") != 0) {
@@ -79,18 +94,24 @@ task main()
 			calibrate();
 
 			//fill the pancake
-			if(strcmp(action, "Text") == 0){
-				drawSquare(150, 75, 15);
-				calibrate();
-				//wait a few seconds to give the drawing time to get some color
-				wait1Msec(30000); //TODO: change the amount of seconds to wait
-				fillRectangle(145, 70, 1, 20);
-			} else {
+			 if (fillFigure == 0){
 				drawSquare(100, 100, 15);
 				calibrate();
 				//wait a few seconds to give the drawing time to get some color
-				wait1Msec(30000); //TODO: change the amount of seconds to wait
+				wait1Msec(bakeTime);
 				fillRectangle(95, 95, 3, 20);
+			} else if(fillFigure == 1){
+				drawSquare(150, 75, 15);
+				calibrate();
+				//wait a few seconds to give the drawing time to get some color
+				wait1Msec(bakeTime);
+				fillRectangle(145, 70, 1, 20);
+			} else if (fillFigure == 2) {
+				drawCircular((gridWidth/10), (gridHeight/10), 50, 360, 20);
+				calibrate();
+				//wait a few seconds to give the drawing time to get some color
+				wait1Msec(bakeTime);
+				fillCircle(45, 5, 5, 20);
 			}
 
 			//wait a few seconds to bake the pancake

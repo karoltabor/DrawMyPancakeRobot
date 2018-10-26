@@ -6,14 +6,16 @@ task monitorPlotter();
 bool penPosition = false;
 int xPosition, xDestination;
 int yPosition, yDestination;
-int gridWidth = 850;
-int gridHeight = 470;
+int gridWidth = 800;
+int gridHeight = 480;
 int factor = 5;
 int unprecision = 10;
-int margin = 10;
+int margin = 20;
 int letterBoxWidth;
 int letterBoxHeight = 75;
 int letterWidth; // Extra for double letters
+bool xStopped = false;
+bool yStopped = false;
 
 
 /*******************************************************
@@ -36,27 +38,33 @@ task monitorPlotter()
 
 void calibrate() {
 	while(!(getTouchValue(xHome) && getTouchValue(xHome2) && getTouchValue(yHome))) {
-		if(getTouchValue(xHome) == false) {
-			setMotor(xMotor,-20);
-			} else {
-			if(getMotorSpeed(xMotor) > 0){
-				setMotor(xMotor,0);
+		if(!getTouchValue(xHome) == 1) {
+			if(getMotorSpeed(xMotor) > -20){
+				setMotor(xMotor,-20);
+			}
+		} else {
+			if(getMotorSpeed(xMotor) < 0){
+				stopMotor(xMotor);
 			}
 		}
 
-		if(getTouchValue(xHome2) == false) {
-			setMotor(xMotor2,-20);
-			} else {
-			if(getMotorSpeed(xMotor2) > 0){
-				setMotor(xMotor2,0);
+		if(!getTouchValue(xHome2) == 1) {
+			if(getMotorSpeed(xMotor2) > -20){
+				setMotor(xMotor2,-20);
+			}
+		} else {
+			if(getMotorSpeed(xMotor2) < 0){
+				stopMotor(xMotor2);
 			}
 		}
 
-		if(getTouchValue(yHome) == false) {
-			setMotor(yMotor,-20);
-			} else {
-			if(getMotorSpeed(yMotor) > 0){
-				setMotor(yMotor,0);
+		if(!getTouchValue(yHome) == 1) {
+			if(getMotorSpeed(yMotor) > -20){
+				setMotor(yMotor,-20);
+			}
+		} else {
+			if(getMotorSpeed(yMotor) < 0){
+				stopMotor(yMotor);
 			}
 		}
 	}
@@ -93,6 +101,8 @@ void pressBottle(bool press) {
 *   Movement functions
 ********************************************************/
 void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
+	xStopped = false;
+	yStopped = false;
 	float ratio;
 	if(amountToMoveX == 0 || amountToMoveY == 0){
 		ratio = 1;
@@ -119,59 +129,105 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 		xDestination = factor*amountToMoveX; // xDestination = 5x Current xPosition;
 		yDestination = factor*amountToMoveY; // yDestination = 5x Current yPosition;
 
-		const int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
+		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
 		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination);
 
 		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-unprecision) && (getMotorEncoder(yMotor) < yDesinationEncoder+unprecision)) ||
 			!((getMotorEncoder(xMotor) > xDesinationEncoder-unprecision) && (getMotorEncoder(xMotor) < xDesinationEncoder+unprecision))){
 
-			//playSoundFile("Laser");
-
-			if(yDesinationEncoder > (getMotorEncoder(yMotor)-unprecision)){
-				if(getMotorSpeed(yMotor) < ySpeed) {
+			if(!yStopped && (getMotorEncoder(yMotor) < (yDesinationEncoder-unprecision/4))){
 					setMotor(yMotor,ySpeed);
-				}
 			}
-			else if(yDesinationEncoder < (getMotorEncoder(yMotor)+unprecision)){
-				if(getMotorSpeed(yMotor) > -ySpeed) {
+			else if(!yStopped && (getMotorEncoder(yMotor) > (yDesinationEncoder+unprecision/4))){
 					setMotor(yMotor, -ySpeed);
-				}
 			}
 			else {
-				if(getMotorSpeed(yMotor) > 0){
-					setMotor(yMotor,0);
-				}
+				yStopped = true;
+				stopMotor(yMotor);
 				yDestination = 1;
 			}
 
-			if(xDesinationEncoder > (getMotorEncoder(xMotor)-unprecision)){
-				if(getMotorSpeed(xMotor) < xSpeed) {
+			if(!xStopped && (getMotorEncoder(xMotor) < (xDesinationEncoder-unprecision))){
 					setMotor(xMotor, xSpeed);
-				}
-				if(getMotorSpeed(xMotor2) < xSpeed) {
 					setMotor(xMotor2, xSpeed);
-				}
 			}
-			else if(xDesinationEncoder < (getMotorEncoder(xMotor)+unprecision)){
-				if(getMotorSpeed(xMotor) > -xSpeed) {
+			else if(!xStopped && (getMotorEncoder(xMotor) > (xDesinationEncoder+unprecision))){
 					setMotor(xMotor, -xSpeed);
-				}
-				if(getMotorSpeed(xMotor2) > -xSpeed) {
 					setMotor(xMotor2, -xSpeed);
-				}
 			}
 			else{
-				if(getMotorSpeed(xMotor) > 0){
-					setMotor(xMotor,0);
-				}
-				if(getMotorSpeed(xMotor2) > 0){
-					setMotor(xMotor2,0);
-				}
+				xStopped = true;
+				writeDebugStreamLine("stop");
+					stopMotor(xMotor);
+					stopMotor(xMotor2);
 				xDestination = 1;
 			}
 		}
 		stopAllMotors();
 	}
+}
+
+
+/********************************************************
+*   Move Elipse
+********************************************************/
+void moveEllipse (int xCenter, int yCenter, int xradius, int yradius, int finalangle, int speed){
+	int preSin = 1;
+	int preCos = 1;
+	int radius;
+	int angle = 0;
+	int step = 4;
+
+	if (xradius > yradius){
+		preSin = xradius/yradius;
+		radius = yradius;
+	}
+	else if (xradius < yradius){
+		preCos = yradius/xradius;
+		radius = xradius;
+		} else {
+		radius = xradius;
+	}
+	while (angle <= finalangle){
+		int xPoint = xCenter + radius * (preSin * sinDegrees(angle));
+		int yPoint = yCenter + radius * (preCos * -cosDegrees(angle));
+
+		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
+		angle += step;
+
+	}
+
+}
+
+/********************************************************
+*   Move Elipse2
+********************************************************/
+void moveEllipse2 (int xCenter, int yCenter, int xradius, int yradius, int finalangle, int speed){
+	int preSin = 1;
+	int preCos = 1;
+	int radius;
+	int angle = 0;
+	int step = 4;
+
+	if (xradius > yradius){
+		preSin = xradius/yradius;
+		radius = yradius;
+	}
+	else if (xradius < yradius){
+		preCos = yradius/xradius;
+		radius = xradius;
+		} else {
+		radius = xradius;
+	}
+	while (angle <= finalangle){
+		int xPoint = xCenter + radius * (preSin * sinDegrees(angle));
+		int yPoint = yCenter + radius * (preCos * cosDegrees(angle));
+
+		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
+		angle += step;
+
+	}
+
 }
 
 /********************************************************
@@ -313,71 +369,24 @@ void freeDraw(char *input, int speed) {
 	}
 }
 
-
 /********************************************************
-*   Move Elipse
+*   Draw a Circle
 ********************************************************/
-void moveEllipse (int xCenter, int yCenter, int xradius, int yradius, int finalangle, int speed){
-	int preSin = 1;
-	int preCos = 1;
-	int radius;
+void drawCircular(int xCenter, int yCenter, int radius, int finalAngle, int speed){
+	pressBottle(false);
+	moveLinear(xCenter, 0, speed);
+	moveLinear(0, yCenter-radius, speed);
 	int angle = 0;
 	int step = 4;
-
-	if (xradius > yradius){
-		preSin = xradius/yradius;
-		radius = yradius;
-	}
-	else if (xradius < yradius){
-		preCos = yradius/xradius;
-		radius = xradius;
-		} else {
-		radius = xradius;
-	}
-	writeDebugStreamLine("radius: %d", radius);
-	displayBigTextLine(3, "Test1");
-	while (angle <= finalangle){
-		int xPoint = xCenter + radius * (preSin * sinDegrees(angle));
-		int yPoint = yCenter + radius * (preCos * -cosDegrees(angle));
-
+	pressBottle(true);
+	while(angle <=finalAngle){
+		int xPoint = xCenter + radius * sinDegrees(angle);
+		int yPoint = yCenter + radius * -cosDegrees(angle);
 		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
 		angle += step;
-
+		delay(300);
 	}
-
-}
-
-/********************************************************
-*   Move Elipse2
-********************************************************/
-void moveEllipse2 (int xCenter, int yCenter, int xradius, int yradius, int finalangle, int speed){
-	int preSin = 1;
-	int preCos = 1;
-	int radius;
-	int angle = 0;
-	int step = 4;
-
-	if (xradius > yradius){
-		preSin = xradius/yradius;
-		radius = yradius;
-	}
-	else if (xradius < yradius){
-		preCos = yradius/xradius;
-		radius = xradius;
-		} else {
-		radius = xradius;
-	}
-	writeDebugStreamLine("radius: %d", radius);
-	displayBigTextLine(3, "Test1");
-	while (angle <= finalangle){
-		int xPoint = xCenter + radius * (preSin * sinDegrees(angle));
-		int yPoint = yCenter + radius * (preCos * cosDegrees(angle));
-
-		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
-		angle += step;
-
-	}
-
+	pressBottle(false);
 }
 
 /********************************************************
