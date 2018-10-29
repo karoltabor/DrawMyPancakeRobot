@@ -14,6 +14,8 @@ int margin = 20;
 int letterBoxWidth;
 int letterBoxHeight = 75;
 int letterWidth; // Extra for double letters
+int previousXCoor = 0;
+int previousYCoor = 0;
 bool xStopped = false;
 bool yStopped = false;
 
@@ -132,8 +134,7 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
 		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination);
 
-		while(!((getMotorEncoder(yMotor) < (yDesinationEncoder-unprecision)) && (getMotorEncoder(yMotor) > (yDesinationEncoder+unprecision))) ||
-			!((getMotorEncoder(xMotor) < (xDesinationEncoder-unprecision)) && (getMotorEncoder(xMotor) > (xDesinationEncoder+unprecision)))){
+		while(!(yStopped && xStopped)){
 
 			if(!yStopped && (getMotorEncoder(yMotor) < (yDesinationEncoder-unprecision))){
 					setMotor(yMotor,ySpeed);
@@ -310,79 +311,66 @@ char* removeLeadingZeros(char *coord){
 *	Read inputstring variables
 ******************************************/
 
-void freeDraw(char *input, int speed) {
+void freeDraw(char *instruction, int speed) {
 	int count = 0;
 
-	string xCoor = "0";
-	string yCoor = "0";
-	//for each instuction of 9 characters
-	while(count < (strlen(input)/9)){
-		string instruction, bottlePressed;
-		strcpy(instruction, input);
-		stringDelete(instruction, 0, count*9);
-		stringDelete(instruction, 9, strlen(instruction)-9);
+	string xCoor, yCoor, bottlePressed;
 
-		//split instruction into x-coordinate, y-coordinate and a boolean for the bottle press function
-		strcpy(xCoor, instruction);
-		stringDelete(xCoor, 4 , 5);
-		strcpy(yCoor, instruction);
-		stringDelete(yCoor, 0 , 4);
-		stringDelete(yCoor, 4 , 1);
-		strcpy(bottlePressed, instruction);
-		stringDelete(bottlePressed, 0 , 8);
+	//split instruction into x-coordinate, y-coordinate and a boolean for the bottle press function
+	strcpy(xCoor, instruction);
+	stringDelete(xCoor, 4 , 5);
+	strcpy(yCoor, instruction);
+	stringDelete(yCoor, 0 , 4);
+	stringDelete(yCoor, 4 , 1);
+	strcpy(bottlePressed, instruction);
+	stringDelete(bottlePressed, 0 , 8);
 
-		char *xCoorArr = xCoor;
-		char *yCoorArr = yCoor;
+	char *xCoorArr = xCoor;
+	char *yCoorArr = yCoor;
 
-		int previousXCoor, previousYCoor;
-		sscanf(xCoor, "%d", &previousXCoor);
-		sscanf(yCoor, "%d", &previousYCoor);
+	int xCoorInt, yCoorInt;
+	xCoor = removeLeadingZeros(xCoorArr);
+	yCoor = removeLeadingZeros(yCoorArr);
+	sscanf(xCoor, "%d", &xCoorInt);
+	sscanf(yCoor, "%d", &yCoorInt);
 
-		int xCoorInt, yCoorInt;
-		xCoor = removeLeadingZeros(xCoorArr);
-		yCoor = removeLeadingZeros(yCoorArr);
-		sscanf(xCoor, "%d", &xCoorInt);
-		sscanf(yCoor, "%d", &yCoorInt);
+	int xDistance = (xCoorInt-previousXCoor)/factor;
+	int yDistance = (yCoorInt-previousYCoor)/factor;
 
-		int xDistance = xCoorInt-previousXCoor;
-		int yDistance = yCoorInt-previousYCoor;
-
-		bool bottle;
-		if(bottlePressed == "T"){
-			pressBottle(true);
-			} else {
-			pressBottle(false);
-		}
-
-		//execute instruction
-		moveLinear(xDistance, yDistance, speed);
-		writeDebugStreamLine("xCoor: %s", previousXCoor);
-		writeDebugStreamLine("yCoor: %s", previousYCoor);
-		writeDebugStreamLine("prev xCoor: %s", xCoor);
-		writeDebugStreamLine("prev yCoor: %s", yCoor);
-		writeDebugStreamLine("xDistance: %d", xDistance);
-		writeDebugStreamLine("yDistance: %d", yDistance);
-		writeDebugStreamLine("bottlePressed: %d", bottle);
-
-		count++;
+	if(bottlePressed == "T"){
+		pressBottle(true);
+		} else {
+		pressBottle(false);
 	}
+
+	//execute instruction
+	moveLinear(xDistance, yDistance, speed);
+	writeDebugStreamLine("xCoor: %d", previousXCoor);
+	writeDebugStreamLine("yCoor: %d", previousYCoor);
+	writeDebugStreamLine("prev xCoor: %d", xCoorInt);
+	writeDebugStreamLine("prev yCoor: %d", yCoorInt);
+	writeDebugStreamLine("xDistance: %d", xDistance);
+	writeDebugStreamLine("yDistance: %d", yDistance);
+	writeDebugStreamLine("bottlePressed: %s", bottlePressed);
+
+	previousXCoor = xCoorInt;
+	previousYCoor = yCoorInt;
 }
 
 /********************************************************
 *   Draw a Circle
 ********************************************************/
-void drawCircular(int xCenter, int yCenter, int radius, int finalAngle, int speed){
+void drawCircular(int xCenter, int yCenter, int radius, int finalAngle, int steps, int speed){
 	pressBottle(false);
 	moveLinear(xCenter, 0, speed);
 	moveLinear(0, yCenter-radius, speed);
 	int angle = 0;
-	int step = 4;
 	pressBottle(true);
 	while(angle <=finalAngle){
 		int xPoint = xCenter + radius * sinDegrees(angle);
 		int yPoint = yCenter + radius * -cosDegrees(angle);
 		moveLinear(xPoint - xPosition, yPoint - yPosition,speed);
-		angle += step;
+		angle += steps;
 		delay(300);
 	}
 	pressBottle(false);

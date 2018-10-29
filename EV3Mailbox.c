@@ -57,3 +57,11 @@ void readMailboxIn(char *name, char *msg)
 		}
 	}
 }
+
+void flushMailbox(char *mailbox){
+	char data[MAX_MSG_LENGTH];
+	readMailboxIn(mailbox, data);
+	while(strcmp(data, "") != 0) {
+		//readMailboxIn(mailbox, data);
+	}
+}

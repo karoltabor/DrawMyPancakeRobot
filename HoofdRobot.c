@@ -22,6 +22,9 @@ task main()
 	openMailboxIn("EV3_INBOX0");
 	openMailboxIn("EV3_INBOX1");
 
+	flushMailbox("EV3_INBOX0");
+	flushMailbox("EV3_INBOX1");
+
 	setMotorBrakeMode(xMotor, motorBrake);
 	setMotorBrakeMode(xMotor2, motorBrake);
 	setMotorBrakeMode(yMotor, motorBrake);
@@ -65,7 +68,7 @@ task main()
 			* strings in freeDraw are split in xy-plot *
 			********************************************/
 			if (strcmp(action, "Circle") == 0) {
-				drawCircular((gridWidth/10-margin), (gridHeight/10-margin), 30, 360, 20);
+				drawCircular((gridWidth/10-margin), (gridHeight/10-margin), 30, 360, 10, 20);
 				fillFigure = 2;
 			} else if (strcmp(action, "Heart") == 0) {
 				drawHeart(100);
@@ -85,29 +88,39 @@ task main()
 				writeText(payload, 150, 75, 20);
 				fillFigure = 1;
 			} else if (strcmp(action, "FreeDraw") == 0) {
+				//reset old data and wait for payload
+				previousXCoor = 0;
+				previousYCoor = 0;
+				while(!(strlen(payload) > 0)){
+					readMailboxIn("EV3_INBOX1", payload);
+				}
+
 				//iterate through instructions
 				while (strcmp(payload, "") != 0) {
 					freeDraw(payload, 20);
+					readMailboxIn("EV3_INBOX1", payload);
+					delay(100);
 				}
+				fillFigure = 2;
 			}
 
 			calibrate();
 
 			//fill the pancake
-			 if (fillFigure == 0){
+			if (fillFigure == 0){
 				drawSquare(100, 100, 15);
 				calibrate();
 				//wait a few seconds to give the drawing time to get some color
 				wait1Msec(bakeTime);
 				fillRectangle(95, 95, 3, 20);
-			} else if(fillFigure == 1){
+				} else if(fillFigure == 1){
 				drawSquare(150, 75, 15);
 				calibrate();
 				//wait a few seconds to give the drawing time to get some color
 				wait1Msec(bakeTime);
-				fillRectangle(145, 70, 1, 20);
-			} else if (fillFigure == 2) {
-				drawCircular((gridWidth/10), (gridHeight/10), 50, 360, 20);
+				fillRectangle(145, 70, 3, 20);
+				} else if (fillFigure == 2) {
+				drawCircular((gridWidth/10), (gridHeight/10), 50, 360, 10, 20);
 				calibrate();
 				//wait a few seconds to give the drawing time to get some color
 				wait1Msec(bakeTime);
