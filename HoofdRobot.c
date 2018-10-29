@@ -70,23 +70,32 @@ task main()
 			if (strcmp(action, "Circle") == 0) {
 				drawCircular((gridWidth/10-margin), (gridHeight/10-margin), 30, 360, 10, 20);
 				fillFigure = 2;
+				delay(bakeTime);
 			} else if (strcmp(action, "Heart") == 0) {
 				drawHeart(100);
+				delay(bakeTime);
 			} else if (strcmp(action, "Square") == 0) {
 				drawSquare(75,75,20);
+				delay(bakeTime);
 			} else if (strcmp(action, "Triangle") == 0) {
 				drawTriangle(30, 40);
+				delay(bakeTime);
 			} else if (strcmp(action, "Star") == 0) {
 				drawStar(50, 40, 20);
+				delay(bakeTime);
 			} else if (strcmp(action, "Spiral") == 0) {
 				drawSpiral(50, 50, 50, 20);
+				delay(bakeTime);
 			} else if (strcmp(action, "Eiffel") == 0) {
 				drawEiffel(99, 20);
+				delay(bakeTime);
 			} else if (strcmp(action, "Smiley") == 0) {
 				drawSmiley(50,50,50,20);
+				delay(bakeTime);
 			} else if (strcmp(action, "Text") == 0) {
 				writeText(payload, 150, 75, 20);
 				fillFigure = 1;
+				delay(bakeTime);
 			} else if (strcmp(action, "FreeDraw") == 0) {
 				//reset old data and wait for payload
 				previousXCoor = 0;
@@ -95,15 +104,18 @@ task main()
 					readMailboxIn("EV3_INBOX1", payload);
 				}
 
+				resetTimer(T1);
 				//iterate through instructions
-				while (strcmp(payload, "") != 0) {
-					freeDraw(payload, 20);
+				while (getTimer(T1,milliseconds) < bakeTime) {
+					if(strcmp(payload, "") != 0) {
+						freeDraw(payload, 20);
+						resetTimer(T1);
+					}
 					readMailboxIn("EV3_INBOX1", payload);
-					delay(100);
 				}
-				fillFigure = 2;
 			}
 
+			//wait1Msec(bakeTime);
 			calibrate();
 
 			//fill the pancake
@@ -111,19 +123,16 @@ task main()
 				drawSquare(100, 100, 15);
 				calibrate();
 				//wait a few seconds to give the drawing time to get some color
-				wait1Msec(bakeTime);
-				fillRectangle(95, 95, 3, 20);
-				} else if(fillFigure == 1){
+				fillRectangle(90, 90, 6, 20);
+			} else if(fillFigure == 1){
 				drawSquare(150, 75, 15);
 				calibrate();
 				//wait a few seconds to give the drawing time to get some color
-				wait1Msec(bakeTime);
-				fillRectangle(145, 70, 3, 20);
-				} else if (fillFigure == 2) {
+				fillRectangle(140, 65, 3, 20);
+			} else if (fillFigure == 2) {
 				drawCircular((gridWidth/10), (gridHeight/10), 50, 360, 10, 20);
 				calibrate();
 				//wait a few seconds to give the drawing time to get some color
-				wait1Msec(bakeTime);
 				fillCircle(45, 5, 5, 20);
 			}
 

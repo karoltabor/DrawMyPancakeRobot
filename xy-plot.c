@@ -334,24 +334,18 @@ void freeDraw(char *instruction, int speed) {
 	sscanf(xCoor, "%d", &xCoorInt);
 	sscanf(yCoor, "%d", &yCoorInt);
 
-	int xDistance = (xCoorInt-previousXCoor)/factor;
-	int yDistance = (yCoorInt-previousYCoor)/factor;
+	int xDistance = (xCoorInt-previousXCoor)/(factor*2);
+	int yDistance = (yCoorInt-previousYCoor)/(factor*2);
+	if(xDistance > 0 || yDistance > 0){
+		if(bottlePressed == "T"){
+			pressBottle(true);
+			} else {
+			pressBottle(false);
+		}
 
-	if(bottlePressed == "T"){
-		pressBottle(true);
-		} else {
-		pressBottle(false);
+		//execute instruction
+		moveLinear(xDistance, yDistance, speed);
 	}
-
-	//execute instruction
-	moveLinear(xDistance, yDistance, speed);
-	writeDebugStreamLine("xCoor: %d", previousXCoor);
-	writeDebugStreamLine("yCoor: %d", previousYCoor);
-	writeDebugStreamLine("prev xCoor: %d", xCoorInt);
-	writeDebugStreamLine("prev yCoor: %d", yCoorInt);
-	writeDebugStreamLine("xDistance: %d", xDistance);
-	writeDebugStreamLine("yDistance: %d", yDistance);
-	writeDebugStreamLine("bottlePressed: %s", bottlePressed);
 
 	previousXCoor = xCoorInt;
 	previousYCoor = yCoorInt;
