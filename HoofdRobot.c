@@ -50,7 +50,7 @@ task main()
 			********************************************/
 			delay(2000);
 			pressBottle(true);
-			//delay(15000);
+			delay(15000);
 			pressBottle(false);
 
 			int fillFigure = 0;

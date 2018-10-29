@@ -82,7 +82,7 @@ void calibrate() {
 task Pump()
 {
 	while(true) {
-		setMotor(pumpMotor, 50);
+		setMotor(pumpMotor, 100);
 	}
 	setMotor(pumpMotor, 0);
 }
@@ -157,9 +157,8 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 			}
 			else{
 				xStopped = true;
-				writeDebugStreamLine("stop");
-					stopMotor(xMotor);
-					stopMotor(xMotor2);
+				stopMotor(xMotor);
+				stopMotor(xMotor2);
 				xDestination = 1;
 			}
 		}
