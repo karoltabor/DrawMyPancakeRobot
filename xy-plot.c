@@ -132,13 +132,13 @@ void moveLinear(int amountToMoveX, int amountToMoveY, int speed){
 		int yDesinationEncoder = (getMotorEncoder(yMotor) + yDestination);
 		int xDesinationEncoder = (getMotorEncoder(xMotor) + xDestination);
 
-		while(!((getMotorEncoder(yMotor) > yDesinationEncoder-unprecision) && (getMotorEncoder(yMotor) < yDesinationEncoder+unprecision)) ||
-			!((getMotorEncoder(xMotor) > xDesinationEncoder-unprecision) && (getMotorEncoder(xMotor) < xDesinationEncoder+unprecision))){
+		while(!((getMotorEncoder(yMotor) < (yDesinationEncoder-unprecision)) && (getMotorEncoder(yMotor) > (yDesinationEncoder+unprecision))) ||
+			!((getMotorEncoder(xMotor) < (xDesinationEncoder-unprecision)) && (getMotorEncoder(xMotor) > (xDesinationEncoder+unprecision)))){
 
-			if(!yStopped && (getMotorEncoder(yMotor) < (yDesinationEncoder-unprecision/4))){
+			if(!yStopped && (getMotorEncoder(yMotor) < (yDesinationEncoder-unprecision))){
 					setMotor(yMotor,ySpeed);
 			}
-			else if(!yStopped && (getMotorEncoder(yMotor) > (yDesinationEncoder+unprecision/4))){
+			else if(!yStopped && (getMotorEncoder(yMotor) > (yDesinationEncoder+unprecision))){
 					setMotor(yMotor, -ySpeed);
 			}
 			else {
