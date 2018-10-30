@@ -78,13 +78,13 @@ task main()
 				drawSquare(75,75,20);
 				delay(bakeTime);
 			} else if (strcmp(action, "Triangle") == 0) {
-				drawTriangle(30, 40);
+				drawTriangle(50, 20);
 				delay(bakeTime);
 			} else if (strcmp(action, "Star") == 0) {
 				drawStar(50, 40, 20);
 				delay(bakeTime);
 			} else if (strcmp(action, "Spiral") == 0) {
-				drawSpiral(50, 50, 50, 20);
+				drawSpiral(60, 60, 60, 20);
 				delay(bakeTime);
 			} else if (strcmp(action, "Eiffel") == 0) {
 				drawEiffel(99, 20);

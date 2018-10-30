@@ -7,7 +7,7 @@ bool penPosition = false;
 int xPosition, xDestination;
 int yPosition, yDestination;
 int gridWidth = 800;
-int gridHeight = 480;
+int gridHeight = 550;
 int factor = 5;
 int unprecision = 10;
 int margin = 20;
